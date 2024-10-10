@@ -1,0 +1,74 @@
+<div class="container ">
+
+  <div class="row justify-content-center mt-5">
+    <h2 class="text-danger text-center ">Add Product</h2>
+    <div class="col-md-5 my-4 border border-danger-subtle rounded-2 shadow p-4 ">
+
+
+      <form #contactform="ngForm" (ngSubmit)="onSubmit(contactform)" novalidate>
+        <div class="row mb-3">
+          <div class="col-12 col-md-12">
+            <label class="form-label">Name: </label>
+            <input type="text" class="form-control" [(ngModel)]="product.name" #name="ngModel" name="name" required>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback d-block">
+              Name is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-12">
+            <label class="form-label">Price: </label>
+            <input type="number" class="form-control" [(ngModel)]="product.price" #price="ngModel" name="price"
+              required>
+            <div *ngIf="price.invalid && (price.dirty || price.touched)" class="invalid-feedback d-block">
+              Price is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-12">
+            <label class="form-label">Description: </label>
+            <textarea class="form-control" [(ngModel)]="product.description" #description="ngModel" name="description"
+              rows="3" cols="1">
+        </textarea>
+            <div *ngIf="description.invalid && (description.dirty || description.touched)"
+              class="invalid-feedback d-block">
+              Description is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-12">
+            <label class="form-label">Quantity: </label>
+            <input type="number" class="form-control" [(ngModel)]="product.quantity" #quantity="ngModel" name="quantity"
+              required>
+            <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="invalid-feedback d-block">
+              Quantity is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-12">
+            <label class="form-label">Image URL: </label>
+            <input type="text" class="form-control" [(ngModel)]="product.imageUrl" #imageUrl="ngModel" name="imageUrl"
+              required>
+            <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="invalid-feedback d-block">
+              Image URL is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary" [disabled]="contactform.invalid">Add Product</button>
+            <button class="btn btn-success ms-3" (click)="onBack()">Back</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

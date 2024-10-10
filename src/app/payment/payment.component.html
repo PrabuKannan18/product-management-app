@@ -1,0 +1,145 @@
+<div class="h3 text-success d-flex mt-4 justify-content-center">Payment Details</div>
+
+<div class="container d-flex justify-content-center  mt-5   align-items-center ">
+    <!-- Payment Details Header -->
+  
+
+    <!-- Loading Overlay -->
+    <div *ngIf="processing"
+        class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center"
+        style="opacity: 0.9; z-index: 1050;">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <form #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)" novalidate>
+        <div class="row mb-3 mt-5">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Name:</label>
+                <input type="text" class="form-control" [(ngModel)]="payment.name" name="name" #name="ngModel" required>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mt-2">
+                    Name is required
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Phone no:</label>
+                <input type="tel" class="form-control" [(ngModel)]="payment.phone" name="phone" #phone="ngModel"
+                    required>
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger mt-2">
+                    Phone number is required
+                </div>
+            </div>
+
+            <div class="col-md-8 mb-3">
+                <label class="form-label">Address:</label>
+                <textarea rows="3" class="form-control" [(ngModel)]="payment.address" name="address" #address="ngModel"
+                    required></textarea>
+                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="text-danger mt-2">
+                    Address is required
+                </div>
+            </div>
+
+            <div class="mb-3 mt-2" *ngIf="payment.method === 'credit-card'">
+                <div class="h4 text-success">Card Details</div>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label">Card Number:</label>
+                        <input type="text" class="form-control" [(ngModel)]="payment.cardnumber" name="cardNumber"
+                            placeholder="1234 5678 9012 3456" required>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <label class="form-label">Expiry Date:</label>
+                        <input type="text" class="form-control" [(ngModel)]="payment.expiry" name="expiry"
+                            placeholder="MM/YY" required>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <label class="form-label">CVV:</label>
+                        <input type="text" class="form-control" [(ngModel)]="payment.cvv" name="cvv" placeholder="123"
+                            required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="h4 text-success mt-3">Payment Options</div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" id="cash-on-delivery" name="paymentMethod"
+                value="cash-on-delivery" [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="cash-on-delivery">
+                <i class="fa-solid fa-cash-register me-2"></i>Cash On Delivery
+            </label>
+        </div>
+
+        <div class="h5 text-success mt-2 ">Online Payment</div>
+        <div class="form-check mb-2 p-1 ms-3">
+            <input class="form-check-input" id="credit-card" type="radio" name="paymentMethod" value="credit-card"
+                [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="credit-card">
+                <i class="fa-solid fa-credit-card me-2"></i>Debit/Credit Card
+            </label>
+        </div>
+
+        <div class="form-check mb-2 p-1 ms-3">
+            <input class="form-check-input" id="upi" type="radio" name="paymentMethod" value="upi"
+                [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="upi">
+                <i class="fa-solid fa-dollar-sign me-2"></i>UPI
+            </label>
+        </div>
+
+        <div class="form-check mb-2 p-1 ms-3">
+            <input class="form-check-input" id="net" type="radio" name="paymentMethod" value="net"
+                [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="net">
+                <i class="fa-solid fa-money-bill me-2"></i>Net Banking
+            </label>
+        </div>
+
+        <div class="form-check mb-2 p-1 ms-3">
+            <input class="form-check-input" id="digital-wallet" type="radio" name="paymentMethod" value="digital"
+                [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="digital-wallet">
+                <i class="fa-solid fa-wallet me-2"></i>Digital Wallets
+            </label>
+        </div>
+
+        <div class="form-check mb-4 p-1 ms-3">
+            <input class="form-check-input" id="emi" type="radio" name="paymentMethod" value="emi"
+                [(ngModel)]="payment.method">
+            <label class="form-check-label fs-6" for="emi">
+                <i class="fa-solid fa-money-check-dollar me-2"></i>EMI
+            </label>
+        </div>
+
+        <div class="text-end mb-4 p-1 ms-3" >
+            <button type="submit" class="btn btn-success">Pay Now</button>
+            <button type="button" class="btn btn-warning ms-2" routerLink="/cart">Back</button>
+        </div>
+    </form>
+
+    <!-- Payment Success Message -->
+    <div *ngIf="paymentSuccess"
+        class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+        style="opacity: 0.9; background-color:lightgray;">
+        <div class="alert alert-success p-4 rounded shadow-lg bg-light">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fa-solid fa-circle-check fa-2x me-3 text-success"></i>
+                <h4 class="alert-heading mb-0">Payment Successful!</h4>
+            </div>
+            <p class="fs-5">Thank you for your purchase! Your payment has been processed successfully.</p>
+            <div class="bg-light p-3 rounded border border-success">
+                <p class="fw-bold mb-1 text-success">Estimated Delivery Date:</p>
+                <p class="h4">{{ estimatedDeliveryDate }}</p>
+            </div>
+            <div class="mt-4 text-center">
+                <button class="btn btn-outline-success btn-lg" routerLink="/">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+</div>

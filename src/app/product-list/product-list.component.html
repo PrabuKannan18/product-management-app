@@ -1,0 +1,32 @@
+<div class="container my-4  "  >
+    <h2 class="h3 text-center text-danger mb-4">Product List</h2>
+
+    <div *ngIf="loading" class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center" style="opacity: 0.8; ">
+      <button class="btn btn-success" type="button" >
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span role="status">Loading...</span>
+      </button>
+    </div>
+    
+    
+
+    <div class="row">
+      <div class="col-8 col-sm-6 col-lg-4 col-xxl-3" *ngFor="let product of products">
+        <div class="card m-3">
+            <h5 class="card-title text-center mt-3">{{product.name}}</h5>
+            <div class="card-body ratio ratio-1x1 ">
+                <img [src]="product.imageUrl" class="card-img-top p-3"  alt="headphones.jpg">
+            </div>
+            
+            <div class="card-footer d-flex flex-column flex-md-row justify-content-between">
+              <a class="btn btn-primary mb-2 mb-md-0" (click)="viewProduct(product.id)">View Details</a>
+              <a class="btn btn-success" routerLink="">Back</a>
+            </div>
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+

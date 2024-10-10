@@ -1,0 +1,49 @@
+<div class="container my-4">
+  <h2 class="h3 text-success mb-4">Product Details</h2>
+
+  <div *ngIf="loading"
+    class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center"
+    style="opacity: 0.9; ">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+
+  <div class="row ">
+
+    <div class="col-md-6 d-flex align-items-end ">
+      <img [src]="product?.imageUrl" class="img-thumbnail " alt="" style="width:360px; height: 350px;">
+    </div>
+
+    <div class="col-md-6">
+      <h2 class="h3 mt-5 text-danger">{{product?.name}}</h2>
+      <p><strong>Price:</strong> $ {{product?.price}}</p>
+      <p><strong>Description:</strong> {{product?.description}}</p>
+      <p><strong>Available Quantity:</strong> {{product?.quantity}}</p>
+
+     
+      <button class="btn btn-success"
+      
+        [disabled]="product?.addedBy === currentUser?.email || product?.quantity === 0"
+        (click)="addToCart()">
+        Add to Cart
+      </button>
+
+    
+      <button *ngIf=" product?.addedBy === currentUser?.email"
+        class="btn btn-danger ms-3" (click)="deleteProduct()">
+        Delete Product
+      </button>
+
+
+
+      <div>
+        <p class="text-danger mt-3 fw-bolder" *ngIf="product?.quantity === 0">Out of stock</p>
+      </div>
+
+      <a routerLink="/products" class="btn btn-secondary mt-3">Back to Products</a>
+    </div>
+
+  </div>
+</div>

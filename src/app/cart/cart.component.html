@@ -1,0 +1,56 @@
+<div class="container my-4">
+    <h2 class="mb-4 text-success">Your Cart</h2>
+  
+    <div class="alert alert-warning mt-5" *ngIf="cartItems.length === 0">
+      Your cart is empty!
+    </div>
+  
+    <div class="d-flex justify-content-center mb-4" *ngIf="cartItems.length === 0">
+      <button class="btn btn-danger text-center" routerLink="">Shop Now</button>
+    </div>
+  
+    <div *ngIf="cartItems.length > 0">
+      <div class="row mb-4 align-items-center border-bottom pb-3" *ngFor="let item of cartItems">
+        <div class="col-12 col-md-4 mb-3 mb-md-0">
+          <img [src]="item.product.imageUrl" class="ratio  rounded" style="width:300px" alt="product image">
+        </div>
+        <div class="col-12 col-md-4">
+          <h5 class="mb-2">{{item.product.name}}</h5>
+          <p class="text-muted mb-2">{{item.product.description}}</p>
+          <p class="mb-2"><strong>Price:</strong> ${{item.product.price}}</p>
+          <div class="d-flex align-items-center">
+            <strong class="me-2">Quantity:</strong>
+            <button class="btn btn-primary btn-sm me-2" 
+                    [disabled]="item.quantity >= item.product.quantity" 
+                    (click)="incrementQuantity(item.product.id!)">+</button>
+            
+            <input type="number" [(ngModel)]="item.quantity" min="1" 
+                   [max]="item.product.quantity" 
+                   class="form-control d-inline-block w-auto text-center" 
+                   (change)="updateQuantity(item.product.id!, item.quantity)">
+            
+            <button class="btn btn-primary btn-sm ms-2" 
+                    [disabled]="item.quantity <= 1" 
+                    (click)="decrementQuantity(item.product.id!)">-</button>
+          </div>
+          
+        </div>
+        <div class="col-12 col-md-4 text-end">
+          <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.product.id!)">
+            <i class="fa-solid fa-trash"></i> Remove
+          </button>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-12 text-end">
+          <h4 class="mb-4">Total: {{ total | currency }}</h4>
+          <button class="btn btn-danger me-2" (click)="clearCart()">Clear Cart</button>
+          <button class="btn btn-success" routerLink="/payment" >Checkout</button>
+          <button class="btn btn-warning ms-2" routerLink="/products" >Back</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  

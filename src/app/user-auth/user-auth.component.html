@@ -1,0 +1,74 @@
+<div class="container mt-5">
+
+    <div *ngIf="loading"
+        class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center"
+        style="opacity: 0.9; ">
+        <button class="btn btn-success" type="button">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span role="status">Loading...</span>
+        </button>
+    </div>
+
+
+
+    <div class="row justify-content-center align-items-center  ">
+        <div class="col-md-7 col-lg-5 shadow p-5 m-5">
+
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3 text-center">
+                    <h2 class="text-danger">Log in</h2>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email: </label>
+                    <input type="email" class="form-control" name="email" id="email" formControlName="email">
+                    <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+                        class="text-danger mt-2">
+                        Email is Required
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">password: </label>
+                    <input type="password" class="form-control" name="password" id="password"
+                        formControlName="password">
+                    <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
+                        class="text-danger mt-2">
+                        Password is Required
+                    </div>
+                </div>
+
+                <a class="text" (click)="passwordReset()">Forget Password?</a>
+
+                <div class="mb-3 mt-2 text-center d-grid">
+                    <button class="btn btn-primary p-1 fs-5" type="submit">Log In</button>
+                </div>
+
+                <p class="text-center mt-2">Don't have an account? <a href="/user-auth" routerLink="/create">Sign up</a>
+                </p>
+                <div class="d-grid gap-2">
+                    <!-- Google Login Button -->
+                    <button class="btn w-100 d-flex align-items-center justify-content-center" (click)="signInWithGoogle()">
+                        <img src="https://cdn-icons-png.flaticon.com/256/720/720255.png" class="me-2"
+                            style="width: 24px; height: 24px;" alt="Google Logo">
+                        Log in with Google
+                    </button>
+                <button class="btn w-100 d-flex align-items-center justify-content-center ms-2">
+                    <img class="XNo5Ab me-2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD30lEQVR4AayShW4cMRCGLQgzHArKDK9xor5KnyDMSZmZmZmZRWWuKMy8e3y7U8/KvXG6PlR+6dM3Wtv/tElYulnzHXI918HnvQZ7PNfgGfdvz1XQEJzFtz14B++y+crCO+D2XoG97ssw475swhwuGWSOK26T3zX24luWbZbehTxe1uS+YOiuCzGwOB+3mA2yAvcFU8cO7Mrsf30R3Lz4nfMcL+eglZyNkm3QGXZhJ0snzrOw3nE61uc4zQs4wmKOxC3PaIszZA4/I2On6zSsY8ni4P9Kx6loX/WJMCCOk5G47dCZ+r79HLtxR8LfueN45F318TDEORYiW4TJHBcvbf8QhT/TJoRiJkQME2bCJvRpJnwaM8TbuX24Q/k3wS82VR0JwRwOB8nSjF5xJgRvhgxIEtEj3kngLibHcQzc1YdDetWhICSj8iD5UW8MUsX+PoBGdNzJ/qXqQHBv5f4AVHCEBX4yp1LMG26EIJ2I+2hpFn18J8OsuQi5lXv9MxV7/ZAul35HIY0k7cCduJtV7tN95bt0sNgdt5g1sjR/GrX/+E9+j8DyI35xV7eh6q/cpftY2Q5tDwfSoVxYj5jwf5Yf4qV0j+bknXtY2bbZZxxIh9KtlkERfjaD52QFcgdSvl17xkq3zP4u3TwDSAlZAZ2pgmeZgrtZ6aZpraRrGpR0kuVZFTpXv1eBu1lpx5RW3DEFFu1kmWzSM21AiehC04wWc/uUxorbpn4XtU6CiuLWKcvZ5HVPxN7ZQkZwNytqnnxW1DwBSGETWSabnPsSkjuV4G5W2DC+hwPJyCZdL/22ngLJYt7DihonfAW1Y2BRR5bJJhtvaeL9OFoJ7mZrGiC3sHb8b6vlcdswFATRL2ZCDagAX12H+3DOOWe7A8d2fFQZlsRMXpzu6z8kVnGdPcDgDbRJ5InP/nFB3lFOTMlck1TVuW8gD8wzcRO3FeQfFvfeQUbeQU5M2K0yOGBJXlVjcmaO1HFTsernecPZTd/c3ZQ0CeTM7M+S3L0MNWbpT/a94abql7ebXDrburidECiZa5LsspZUZO+kzNI2Z31r9JPsmlx7M2namzHZG7J1vaQkp6qBff09csYN3FKS6jt5w1mPA2stos8sCb/b6zFzIPMcduOG+kzORjpurUaBtRKRuRwSsz8LqnpWQuaoV8MAu9V3VF/MG9Zi2DQXAxrwUlhSENeZA7aWwyY/+bc1tkKu/hOXxkLwZswHVLlTUlINNW0mjFnswC71W+FtGLOd+9ps+7k2qw/MtEmSrlNZB+c6z5jBrPo3nZNjzXQm1FTrjgSp6dYDakr3oFd9U+9y1lO9tTZT6gAAAABJRU5ErkJggg==" style="height:23px;width:22px" >
+                    Log in with Facebook
+                </button>
+                    <!-- Facebook Login Button -->
+                    <!-- <button class="btn w-100 d-flex align-items-center justify-content-center" >
+                        <img src="https://www.internetmatters.org/wp-content/uploads/2024/08/facebook-logo-new.png" class="me-2"
+                            style="width: 84px; height: 24px;" alt="Facebook Logo">
+                        Log in with Facebook
+                    </button> -->
+                </div>
+                
+
+            </form>
+        </div>
+
+    </div>
+
+</div>

@@ -37,7 +37,7 @@ export class HomeComponent {
       name: 'Oppo F18',
       description: 'Latest smartphone from Oppo',
       price: 20000,
-      imageUrl: 'https://www.itel-india.com/wp-content/uploads/2024/02/124-min-450x450.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1000&auto=format&fit=crop',
       quantity: 8
     },
     {
@@ -45,7 +45,7 @@ export class HomeComponent {
       name: 'Hauwei Watch',
       description: 'Smartwatch with a stylish design',
       price: 1000,
-      imageUrl: 'https://telectronics.pk/wp-content/uploads/nc/products/redmi-smart-band-pro-pakistan-telectronics.pk2-430x430.jpg',
+      imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop',
       quantity: 12
     }
   ];

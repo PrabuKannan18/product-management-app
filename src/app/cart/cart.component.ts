@@ -4,6 +4,7 @@ import { CartService } from '../_service/cart.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AgentService } from '../service/agent.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,10 @@ export class CartComponent implements OnInit {
   cartItems: { product: Product; quantity: number }[] = [];
   total: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService,
+    private agentService: AgentService  // Inject the AgentService
+
+  ) { }
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getToCart();
@@ -45,14 +49,14 @@ export class CartComponent implements OnInit {
       this.updateQuantity(productId, item.quantity + 1);
     }
   }
-  
+
   decrementQuantity(productId: string): void {
     const item = this.cartItems.find(item => item.product.id === productId);
     if (item && item.quantity > 1) {
       this.updateQuantity(productId, item.quantity - 1);
     }
   }
-  
+
 
   calculateTotal() {
     this.total = this.cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
@@ -62,5 +66,13 @@ export class CartComponent implements OnInit {
     this.cartService.clearCart();
     this.cartItems = [];
     this.total = 0;
+  }
+
+  ionViewDidEnter() {
+    this.agentService.logAnalyticsEvent('screen_view', {
+      screen_id: 'app-cart',
+      screen_class: 'CartComponent',
+      screen_type: 'Page'
+    })
   }
 }

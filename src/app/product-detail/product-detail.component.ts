@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../_service/cart.service';
 import { AuthService } from '../service/auth-service';
+import { AgentService } from '../service/agent.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -25,7 +26,8 @@ export class ProductDetailComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private cartservice: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private agentService: AgentService // Inject the AgentService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,14 @@ export class ProductDetailComponent implements OnInit {
     if (this.product)
       this.cartservice.addToCart(this.product, 1)
     this.router.navigate(['/cart']);
+  }
+
+   ionViewDidEnter() {
+    this.agentService.logAnalyticsEvent('screen_view', {
+      screen_id: 'app-product-detail',
+      screen_class: 'ProductDetailComponent',
+      screen_type: 'Page'
+    })
   }
 
   

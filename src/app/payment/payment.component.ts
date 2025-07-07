@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AgentService } from '../service/agent.service';
 
 @Component({
   selector: 'app-payment',
@@ -25,6 +26,10 @@ export class PaymentComponent {
     expiry: '',
     cvv: ''
   };
+
+  constructor(private agentService: AgentService) { }
+
+
 
   onSubmit(paymentForm: NgForm) {
     if (this.payment.method === 'credit-card') {
@@ -53,6 +58,14 @@ export class PaymentComponent {
     const today = new Date();
     const deliveryDay = new Date(today.setDate(today.getDate() + deliveryDays));
     this.estimatedDeliveryDate = deliveryDay.toDateString();
+  }
+
+  ionViewDidEnter() {
+    this.agentService.logAnalyticsEvent('screen_view', {
+      screen_id: 'app-payment',
+      screen_class: 'PaymentComponent',
+      screen_type: 'Page'
+    })
   }
 
 }

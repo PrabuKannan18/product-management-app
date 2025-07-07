@@ -5,11 +5,12 @@ import { Product } from '../_models/product';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../service/auth-service';
+import { AgentService } from '../service/agent.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink,FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -53,14 +54,24 @@ export class HomeComponent {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private agentService: AgentService // Inject the AgentService
+  ) { }
+
+  ngOnInit() {
+    this.agentService.logAnalyticsEvent('web_initialized', {
+      screen_user: this.authService.getCurrentUser()?.uid || 'guest',
+      screen_id: 'app-home',
+      screen_class: 'AppHome',
+      screen_type: 'Page'
+    })
+  }
 
   addToCart(product: Product) {
     const currentUser = this.authService.getCurrentUser();
-    
+
     if (currentUser) {
-      this.cartService.addToCart(product, 1); 
+      this.cartService.addToCart(product, 1);
       this.router.navigate(['/cart']);
     } else {
       alert('Please log in to add items to your cart.');

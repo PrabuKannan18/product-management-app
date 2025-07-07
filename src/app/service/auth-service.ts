@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Analytics, setUserId } from '@angular/fire/analytics';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, user } from '@angular/fire/auth';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +14,7 @@ export class AuthService {
     private userSubject: BehaviorSubject<any>;
     user$: Observable<any>;
 
-    constructor(private auth: Auth,private router: Router, private route: ActivatedRoute) {
+    constructor(private auth: Auth, private router: Router, private route: ActivatedRoute, private analytics: Analytics) {
 
         this.userSubject = new BehaviorSubject(null);
         this.user$ = this.userSubject.asObservable();
@@ -21,7 +22,12 @@ export class AuthService {
 
         onAuthStateChanged(this.auth, (user) => {
             this.userSubject.next(user);
+            if (user) {
+                setUserId(this.analytics, user.uid);
+                console.log('User is signed in:', user.uid);
+            }
         });
+
     }
 
 
@@ -51,10 +57,10 @@ export class AuthService {
             })
 
     }
-    
-    passwordReset(email:string){
-        return sendPasswordResetEmail(this.auth,email)
- }
+
+    passwordReset(email: string) {
+        return sendPasswordResetEmail(this.auth, email)
+    }
 
     // Logout method
     logout() {
@@ -78,7 +84,7 @@ export class AuthService {
             })
     }
 
-    
+
     // signOut() {
     //     return this.auth.signOut().then(() => {
     //       this.router.navigate(['/login']);

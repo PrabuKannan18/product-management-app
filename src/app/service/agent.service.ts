@@ -13,8 +13,6 @@ export class AgentService {
   ) {}
 
   async logAnalyticsEvent(event: string, data: any) {
-    console.log('Logging analytics event:', event);
-    console.log('Event data:', data);
     let url = this.router.url.replace(/\/(sv|es-es|nb-no)/g, '');
     if (data.screen_type?.toLowerCase() === 'modal') {
       url = this.router.url + '/' + data.screen_id;
@@ -23,7 +21,7 @@ export class AgentService {
     delete data.screen_type;
 
     logEvent(this.analytics, event, {
-      screen_user: 'guest',
+      // user: data.screen_user ? data.screen_user : 'guest',
       screen_name: pageTitle,
       page_path: url,
       ...data

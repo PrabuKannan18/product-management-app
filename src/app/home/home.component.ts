@@ -60,7 +60,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.agentService.logAnalyticsEvent('web_initialized', {
-      screen_user: this.authService.getCurrentUser()?.uid || 'guest',
+      // screen_user: this.authService.getCurrentUser()?.uid || 'guest',
       screen_id: 'app-home',
       screen_class: 'AppHome',
       screen_type: 'Page'

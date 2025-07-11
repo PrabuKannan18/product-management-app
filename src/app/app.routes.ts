@@ -8,6 +8,7 @@ import { UserAuthComponent } from './user-auth/user-auth.component';
 import { CreateComponent } from './create/create.component';
 import { authGuard } from './auth.guard';
 import { PaymentComponent } from './payment/payment.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate:[authGuard] }, 
   { path: 'user-auth', component: UserAuthComponent },
   { path: 'create', component: CreateComponent },
-  {path: 'payment',component:PaymentComponent}
+  {path: 'payment',component:PaymentComponent},
+  { path: 'reset-password', component: ResetPasswordComponent },
 ];

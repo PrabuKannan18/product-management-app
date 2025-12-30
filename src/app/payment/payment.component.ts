@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { CartService } from '../_service/cart.service';
 import { AgentService } from '../service/agent.service';
 
 @Component({
@@ -16,6 +17,8 @@ export class PaymentComponent {
   processing: boolean = false;
   paymentSuccess: boolean = false;
   estimatedDeliveryDate: string | null = null;
+  total: number = 0;
+  orderNumber: string = '';
 
   payment = {
     name: '',
@@ -27,7 +30,24 @@ export class PaymentComponent {
     cvv: ''
   };
 
-  constructor(private agentService: AgentService) { }
+  constructor(
+    private agentService: AgentService,
+    private cartService: CartService
+  ) {
+    this.calculateTotal();
+    this.generateOrderNumber();
+  }
+
+  private generateOrderNumber(): void {
+    this.orderNumber = '#' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  }
+
+  private calculateTotal(): void {
+    const cartItems = this.cartService.getToCart();
+    this.total = cartItems.reduce((sum, item) => {
+      return sum + (item.product.price * item.quantity);
+    }, 0);
+  }
 
 
 

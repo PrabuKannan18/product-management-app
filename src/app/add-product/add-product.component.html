@@ -1,74 +1,71 @@
-<div class="container ">
-
-  <div class="row justify-content-center mt-5">
-    <h2 class="text-danger text-center ">Add Product</h2>
-    <div class="col-md-5 my-4 border border-danger-subtle rounded-2 shadow p-4 ">
-
-
-      <form #contactform="ngForm" (ngSubmit)="onSubmit(contactform)" novalidate>
-        <div class="row mb-3">
-          <div class="col-12 col-md-12">
-            <label class="form-label">Name: </label>
-            <input type="text" class="form-control" [(ngModel)]="product.name" #name="ngModel" name="name" required>
-            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback d-block">
-              Name is required
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-primary mb-3">Add New Product</h2>
+        <p class="lead text-muted">Fill in the details below to add a new product to our collection</p>
+      </div>
+      
+      <div class="card border-0 shadow-lg">
+        <div class="card-body p-5">
+          <form #contactform="ngForm" (ngSubmit)="onSubmit(contactform)" novalidate>
+            <div class="mb-4">
+              <label for="name" class="form-label fw-semibold">Product Name</label>
+              <input type="text" class="form-control form-control-lg" [(ngModel)]="product.name" #name="ngModel" name="name" required id="name">
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Product name is required
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12 col-md-12">
-            <label class="form-label">Price: </label>
-            <input type="number" class="form-control" [(ngModel)]="product.price" #price="ngModel" name="price"
-              required>
-            <div *ngIf="price.invalid && (price.dirty || price.touched)" class="invalid-feedback d-block">
-              Price is required
+            <div class="mb-4">
+              <label for="price" class="form-label fw-semibold">Price ($)</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">$</span>
+                <input type="number" class="form-control" [(ngModel)]="product.price" #price="ngModel" name="price" required id="price">
+              </div>
+              <div *ngIf="price.invalid && (price.dirty || price.touched)" class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Price is required
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12 col-md-12">
-            <label class="form-label">Description: </label>
-            <textarea class="form-control" [(ngModel)]="product.description" #description="ngModel" name="description"
-              rows="3" cols="1">
-        </textarea>
-            <div *ngIf="description.invalid && (description.dirty || description.touched)"
-              class="invalid-feedback d-block">
-              Description is required.
+            <div class="mb-4">
+              <label for="description" class="form-label fw-semibold">Description</label>
+              <textarea class="form-control form-control-lg" [(ngModel)]="product.description" #description="ngModel" name="description" rows="4" id="description" required></textarea>
+              <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Description is required
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12 col-md-12">
-            <label class="form-label">Quantity: </label>
-            <input type="number" class="form-control" [(ngModel)]="product.quantity" #quantity="ngModel" name="quantity"
-              required>
-            <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="invalid-feedback d-block">
-              Quantity is required.
+            <div class="mb-4">
+              <label for="quantity" class="form-label fw-semibold">Available Quantity</label>
+              <div class="input-group input-group-lg">
+                <input type="number" class="form-control" [(ngModel)]="product.quantity" #quantity="ngModel" name="quantity" required id="quantity">
+                <span class="input-group-text">units</span>
+              </div>
+              <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Quantity is required
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12 col-md-12">
-            <label class="form-label">Image URL: </label>
-            <input type="text" class="form-control" [(ngModel)]="product.imageUrl" #imageUrl="ngModel" name="imageUrl"
-              required>
-            <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="invalid-feedback d-block">
-              Image URL is required.
+            <div class="mb-5">
+              <label for="imageUrl" class="form-label fw-semibold">Image URL</label>
+              <input type="url" class="form-control form-control-lg" [(ngModel)]="product.imageUrl" #imageUrl="ngModel" name="imageUrl" required id="imageUrl">
+              <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Valid image URL is required
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary" [disabled]="contactform.invalid">Add Product</button>
-            <button class="btn btn-success ms-3" (click)="onBack()">Back</button>
-          </div>
+            <div class="d-grid gap-3 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-outline-secondary btn-lg" (click)="onBack()">
+                <i class="bi bi-arrow-left me-2"></i>Back
+              </button>
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="contactform.invalid">
+                <i class="bi bi-plus-circle me-2"></i>Add Product
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

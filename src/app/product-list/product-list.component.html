@@ -1,32 +1,42 @@
-<div class="container my-4  "  >
-    <h2 class="h3 text-center text-danger mb-4">Product List</h2>
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-primary mb-3">Product List</h2>
+        <p class="lead text-muted">Discover our complete collection of premium tech products</p>
+    </div>
 
-    <div *ngIf="loading" class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center" style="opacity: 0.8; ">
-      <button class="btn btn-success" type="button" >
-        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-        <span role="status">Loading...</span>
-      </button>
+    <div *ngIf="loading" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="opacity: 0.95; z-index: 9999;">
+      <div class="text-center">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h4 class="text-muted">Loading Products...</h4>
+        <p class="text-muted">Please wait while we fetch the latest products for you</p>
+      </div>
     </div>
     
-    
-
-    <div class="row">
-      <div class="col-8 col-sm-6 col-lg-4 col-xxl-3" *ngFor="let product of products">
-        <div class="card m-3">
-            <h5 class="card-title text-center mt-3">{{product.name}}</h5>
-            <div class="card-body ratio ratio-1x1 ">
-                <img [src]="product.imageUrl" class="card-img-top p-3"  alt="headphones.jpg">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-lg-4 col-xl-3" *ngFor="let product of products">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-white border-0 pt-4">
+                <h5 class="card-title text-center mb-0 fw-semibold">{{product.name}}</h5>
             </div>
-            
-            <div class="card-footer d-flex flex-column flex-md-row justify-content-between">
-              <a class="btn btn-primary mb-2 mb-md-0" (click)="viewProduct(product.id)">View Details</a>
-              <a class="btn btn-success" routerLink="">Back</a>
+            <div class="card-body p-0">
+                <div class="ratio ratio-1x1 bg-light">
+                    <img [src]="product.imageUrl" class="img-fluid p-4" alt="{{product.name}}">
+                </div>
             </div>
-            
-          
+            <div class="card-footer bg-white border-0 p-4">
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-lg" (click)="viewProduct(product.id)">
+                    <i class="bi bi-eye me-2"></i>View Details
+                </button>
+                <button class="btn btn-outline-secondary btn-lg" routerLink="">
+                    <i class="bi bi-arrow-left me-2"></i>Back
+                </button>
+              </div>
+            </div>
         </div>
       </div>
     </div>
   </div>
-  
 

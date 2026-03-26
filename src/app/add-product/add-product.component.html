@@ -1,70 +1,89 @@
-<div class="container my-5">
+<div class="container my-5 fade-in">
   <div class="row justify-content-center">
-    <div class="col-lg-6">
-      <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold text-primary mb-3">Add New Product</h2>
-        <p class="lead text-muted">Fill in the details below to add a new product to our collection</p>
+    <div class="col-lg-7">
+      <div class="d-flex align-items-center mb-4">
+        <button type="button" class="btn btn-light rounded-circle border shadow-sm me-3" (click)="onBack()" style="width: 45px; height: 45px;">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div>
+          <h2 class="display-6 fw-bold text-dark mb-1">Add New Product</h2>
+          <p class="text-muted mb-0">Fill in the details below to add a new product</p>
+        </div>
       </div>
       
-      <div class="card border-0 shadow-lg">
-        <div class="card-body p-5">
-          <form #contactform="ngForm" (ngSubmit)="onSubmit(contactform)" novalidate>
-            <div class="mb-4">
-              <label for="name" class="form-label fw-semibold">Product Name</label>
-              <input type="text" class="form-control form-control-lg" [(ngModel)]="product.name" #name="ngModel" name="name" required id="name">
-              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback d-block">
-                <i class="bi bi-exclamation-circle me-1"></i>Product name is required
+      <div class="modern-card p-4 p-md-5">
+        <form #contactform="ngForm" (ngSubmit)="onSubmit(contactform)" novalidate>
+          <div class="row g-4">
+            <div class="col-12">
+              <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control form-control-lg bg-light" [(ngModel)]="product.name" #name="ngModel" name="name" required id="name" placeholder="e.g. Sony WH-1000XM4">
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>Product name is required
               </div>
             </div>
 
-            <div class="mb-4">
-              <label for="price" class="form-label fw-semibold">Price ($)</label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">$</span>
-                <input type="number" class="form-control" [(ngModel)]="product.price" #price="ngModel" name="price" required id="price">
+            <div class="col-md-6">
+              <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-dollar-sign"></i></span>
+                <input type="number" class="form-control form-control-lg bg-light border-start-0 ps-0" [(ngModel)]="product.price" #price="ngModel" name="price" required id="price" placeholder="0.00">
               </div>
-              <div *ngIf="price.invalid && (price.dirty || price.touched)" class="invalid-feedback d-block">
-                <i class="bi bi-exclamation-circle me-1"></i>Price is required
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label for="description" class="form-label fw-semibold">Description</label>
-              <textarea class="form-control form-control-lg" [(ngModel)]="product.description" #description="ngModel" name="description" rows="4" id="description" required></textarea>
-              <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback d-block">
-                <i class="bi bi-exclamation-circle me-1"></i>Description is required
+              <div *ngIf="price.invalid && (price.dirty || price.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>Price is required
               </div>
             </div>
 
-            <div class="mb-4">
-              <label for="quantity" class="form-label fw-semibold">Available Quantity</label>
-              <div class="input-group input-group-lg">
-                <input type="number" class="form-control" [(ngModel)]="product.quantity" #quantity="ngModel" name="quantity" required id="quantity">
-                <span class="input-group-text">units</span>
+            <div class="col-md-6">
+              <label for="quantity" class="form-label">Available Quantity <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control form-control-lg bg-light border-end-0" [(ngModel)]="product.quantity" #quantity="ngModel" name="quantity" required id="quantity" placeholder="0">
+                <span class="input-group-text bg-light border-start-0 text-muted">units</span>
               </div>
-              <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="invalid-feedback d-block">
-                <i class="bi bi-exclamation-circle me-1"></i>Quantity is required
-              </div>
-            </div>
-
-            <div class="mb-5">
-              <label for="imageUrl" class="form-label fw-semibold">Image URL</label>
-              <input type="url" class="form-control form-control-lg" [(ngModel)]="product.imageUrl" #imageUrl="ngModel" name="imageUrl" required id="imageUrl">
-              <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="invalid-feedback d-block">
-                <i class="bi bi-exclamation-circle me-1"></i>Valid image URL is required
+              <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>Quantity is required
               </div>
             </div>
 
-            <div class="d-grid gap-3 d-md-flex justify-content-md-end">
-              <button type="button" class="btn btn-outline-secondary btn-lg" (click)="onBack()">
-                <i class="bi bi-arrow-left me-2"></i>Back
-              </button>
-              <button type="submit" class="btn btn-primary btn-lg" [disabled]="contactform.invalid">
-                <i class="bi bi-plus-circle me-2"></i>Add Product
-              </button>
+            <div class="col-12">
+              <label for="imageUrl" class="form-label">Image URL <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="fa-regular fa-image"></i></span>
+                <input type="url" class="form-control form-control-lg bg-light border-start-0 ps-0" [(ngModel)]="product.imageUrl" #imageUrl="ngModel" name="imageUrl" required id="imageUrl" placeholder="https://example.com/image.jpg">
+              </div>
+              <div *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>Valid image URL is required
+              </div>
             </div>
-          </form>
-        </div>
+
+            <!-- Image Preview -->
+            <div class="col-12 mt-3 mb-2" *ngIf="product.imageUrl && imageUrl.valid">
+              <div class="p-3 bg-light rounded-3 text-center border">
+                <p class="small text-muted mb-2 fw-semibold">Image Preview</p>
+                <img [src]="product.imageUrl" alt="Preview" class="img-fluid rounded" style="max-height: 150px; object-fit: contain;">
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+              <textarea class="form-control form-control-lg bg-light" [(ngModel)]="product.description" #description="ngModel" name="description" rows="4" id="description" required placeholder="Describe the product features and specs..."></textarea>
+              <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>Description is required
+              </div>
+            </div>
+            
+            <div class="col-12 mt-4 pt-3 border-top">
+              <div class="d-grid gap-3 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4" (click)="onBack()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" [disabled]="contactform.invalid">
+                  <i class="fa-solid fa-plus me-2"></i>Add Product
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </form>
       </div>
     </div>
   </div>

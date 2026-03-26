@@ -9,17 +9,22 @@ import { CreateComponent } from './create/create.component';
 import { authGuard } from './auth.guard';
 import { PaymentComponent } from './payment/payment.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+import { OrdersComponent } from './orders/orders.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'products', component: ProductListComponent,canActivate:[authGuard]  },  
-  { path: 'add-product', component: AddProductComponent, canActivate:[authGuard]  },  
+  { path: 'products', component: ProductListComponent, canActivate: [authGuard] },  
+  { path: 'add-product', component: AddProductComponent, canActivate: [authGuard] },  
   { path: 'product/:id', component: ProductDetailComponent },
-  { path: 'cart', component: CartComponent, canActivate:[authGuard] }, 
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] }, 
   { path: 'user-auth', component: UserAuthComponent },
   { path: 'create', component: CreateComponent },
-  {path: 'payment',component:PaymentComponent},
+  { path: 'payment', component: PaymentComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'orders', component: OrdersComponent, canActivate: [authGuard] },
+  { path: 'wishlist', component: WishlistComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
 ];

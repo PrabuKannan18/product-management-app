@@ -1,42 +1,78 @@
-<div class="container my-5">
-    <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold text-primary mb-3">Product List</h2>
-        <p class="lead text-muted">Discover our complete collection of premium tech products</p>
+<div class="container my-5 fade-in">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 border-bottom pb-4 gap-3">
+        <div>
+            <h2 class="display-6 fw-bold text-dark mb-1">Explore Products</h2>
+            <p class="text-muted mb-0">Discover our complete collection of premium tech items</p>
+        </div>
+        <div class="input-group bg-white rounded-pill border shadow-sm px-2 py-1" style="max-width: 300px;">
+            <span class="input-group-text bg-transparent border-0 pe-1">
+                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            </span>
+            <input type="text" class="form-control border-0 shadow-none bg-transparent" placeholder="Search products...">
+        </div>
     </div>
 
-    <div *ngIf="loading" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="opacity: 0.95; z-index: 9999;">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="d-flex justify-content-center align-items-center py-5">
       <div class="text-center">
         <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <h4 class="text-muted">Loading Products...</h4>
-        <p class="text-muted">Please wait while we fetch the latest products for you</p>
+        <h5 class="text-muted">Fetching amazing deals...</h5>
       </div>
     </div>
     
-    <div class="row g-4">
-      <div class="col-12 col-sm-6 col-lg-4 col-xl-3" *ngFor="let product of products">
-        <div class="card h-100 shadow-sm border-0">
-            <div class="card-header bg-white border-0 pt-4">
-                <h5 class="card-title text-center mb-0 fw-semibold">{{product.name}}</h5>
+    <div class="row g-4 mb-5" *ngIf="!loading">
+      <!-- Empty state -->
+      <div class="col-12 text-center py-5 my-3" *ngIf="products.length === 0">
+          <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-4" style="width: 80px; height: 80px;">
+            <i class="fa-solid fa-box-open fs-2 text-muted"></i>
+          </div>
+          <h4 class="fw-bold mb-2">No products found</h4>
+          <p class="text-muted mb-4">Be the first to add a product to the store!</p>
+          <a routerLink="/add-product" class="btn btn-primary rounded-pill px-4">Add a Product</a>
+      </div>
+
+      <!-- Product Cards -->
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3" *ngFor="let product of products">
+        <div class="modern-card h-100 p-3 bg-white d-flex flex-column cursor-pointer" (click)="viewProduct(product.id)">
+            <!-- Product Image -->
+            <div class="position-relative rounded-3 overflow-hidden mb-3 bg-light img-placeholder" style="height: 200px;">
+                <img [src]="product.imageUrl" class="w-100 h-100 object-fit-contain p-3" alt="{{product.name}}">
+                <!-- Owner badge overlaid on card image -->
+                <span *ngIf="isOwnProduct(product)"
+                  class="position-absolute top-0 start-0 m-2 badge bg-warning text-dark rounded-pill px-2 py-1 fw-semibold shadow-sm"
+                  style="font-size: 0.7rem;">
+                  <i class="fa-solid fa-pen-to-square me-1"></i>Your Product
+                </span>
             </div>
-            <div class="card-body p-0">
-                <div class="ratio ratio-1x1 bg-light">
-                    <img [src]="product.imageUrl" class="img-fluid p-4" alt="{{product.name}}">
+
+            <!-- Product Info -->
+            <div class="px-1 flex-grow-1 d-flex flex-column">
+                <h6 class="fw-bold mb-1 text-dark text-truncate">{{product.name}}</h6>
+                <p class="text-muted small mb-2 text-truncate">{{product.description}}</p>
+                
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <div class="h5 fw-bolder text-primary mb-0">${{ product.price }}</div>
+
+                    <!-- Add to Cart button — hidden for product owner -->
+                    <button *ngIf="!isOwnProduct(product)"
+                      class="btn btn-light btn-sm rounded-pill px-3 fw-bold border shadow-sm"
+                      (click)="addToCart($event, product)"
+                      [disabled]="product.quantity === 0">
+                      <i class="fa-solid fa-cart-plus me-1 text-primary"></i>
+                      {{ product.quantity === 0 ? 'Out of Stock' : 'Add' }}
+                    </button>
+
+                    <!-- Owner controls: just show a manage label -->
+                    <button *ngIf="isOwnProduct(product)"
+                      class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold"
+                      (click)="viewProduct(product.id)">
+                      <i class="fa-solid fa-pen me-1"></i>Manage
+                    </button>
                 </div>
-            </div>
-            <div class="card-footer bg-white border-0 p-4">
-              <div class="d-grid gap-2">
-                <button class="btn btn-primary btn-lg" (click)="viewProduct(product.id)">
-                    <i class="bi bi-eye me-2"></i>View Details
-                </button>
-                <button class="btn btn-outline-secondary btn-lg" routerLink="">
-                    <i class="bi bi-arrow-left me-2"></i>Back
-                </button>
-              </div>
             </div>
         </div>
       </div>
     </div>
-  </div>
-
+</div>

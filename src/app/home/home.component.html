@@ -1,248 +1,113 @@
-<div id="carouselExampleCaptions" class="carousel slide ">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-      aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner ">
-    <div class="carousel-item active">
-      <div class="ratio ratio-21x9">
-        <img src="https://www.shutterstock.com/image-photo/young-female-customer-standing-near-600nw-1727902048.jpg"
-          class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Explore the ultimate tech essentials in one visual</h5>
-        <p>From laptops to headphones, discover the gadgets that define modern productivity and entertainment.</p>
+<section class="hero-section fade-in">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <span class="badge rounded-pill bg-white text-primary px-3 py-2 mb-3 fw-bold shadow-sm">🚀 New Tech Just Arrived</span>
+      <h1>Upgrade Your Life with Modern Tech</h1>
+      <p class="mb-4">Explore the ultimate collection of gadgets, from high-fidelity audio to cutting-edge smart wearables. Delivered to your doorstep with speed and care.</p>
+      <div class="d-flex gap-3">
+        <a routerLink="/products" class="btn btn-light btn-lg px-5 rounded-pill fw-bold text-primary shadow-sm hover-up">Shop Now</a>
+        <a href="#featured" class="btn btn-outline-light btn-lg px-4 rounded-pill fw-bold">Learn More</a>
       </div>
     </div>
-    <div class="carousel-item">
-      <div class="ratio ratio-21x9">
-        <img src="https://t4.ftcdn.net/jpg/09/13/77/51/360_F_913775110_SfWUE7YMQ5MoOdIsnw5N5Ndvzj5r6XuU.jpg"
-          class="d-block w-100  " alt="...">
-      </div>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Embrace innovation with our latest tech collection</h5>
-        <p>From sleek smartphones to versatile gadgets, stay ahead with cutting-edge solutions.</p>
-      </div>
-    </div>
-    <div class="carousel-item ">
-      <div class="ratio ratio-21x9">
-       <img src="https://thumbs.dreamstime.com/b/row-televisions-positioned-electronics-store-displaying-sale-sign-various-models-brands-available-328105411.jpg">  
-
-      </div>
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Discover unbeatable deals on top-brand televisions</h5>
-        <p>Explore a wide range of models and find the perfect screen for your home entertainment.</p>
+    <div class="col-lg-5 d-none d-lg-block">
+      <div class="position-relative">
+        <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1000&auto=format&fit=crop"
+             class="img-fluid rounded-4 shadow-lg rotate-3d" alt="Featured Product">
       </div>
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+</section>
 
-<!-------------------------------header--------------------------------------------->
-<div class="header bg-light">
-  <div class="container">
-    <h1 class="text-center mt-5">New Arrivals</h1>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <img src="https://s.alicdn.com/@sc04/kf/H0c99aeb551a145f5bede88cd8498f3ee7.jpg_720x720q50.jpg"
-            class="card-img-top" alt="Wisdom EarBuds">
-          <div class="card-body text-center">
-            <h4 class="card-title">$3000</h4>
-            <p class="card-text">Wisdom EarBuds</p>
-          </div>
+<!-- Categories Section -->
+<section class="mb-5 pb-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Shop by category</h3>
+    <a routerLink="/products" class="text-primary text-decoration-none fw-bold small">View all category <i class="fa-solid fa-arrow-right ms-1"></i></a>
+  </div>
+  <div class="d-flex flex-wrap gap-3">
+    <a href="javascript:void(0)" class="category-pill shadow-sm">🎧 Audio</a>
+    <a href="javascript:void(0)" class="category-pill shadow-sm">📱 Smartphones</a>
+    <a href="javascript:void(0)" class="category-pill shadow-sm">⌚ Wearables</a>
+    <a href="javascript:void(0)" class="category-pill shadow-sm">💻 Computing</a>
+    <a href="javascript:void(0)" class="category-pill shadow-sm">Gaming</a>
+    <a href="javascript:void(0)" class="category-pill shadow-sm">Camera</a>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section id="featured" class="mb-5 pt-4 border-top">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h2 class="h1 mb-1">Our Best Sellers</h2>
+      <p class="text-muted mb-0">The most popular gadgets chosen by our community.</p>
+    </div>
+    <a routerLink="/products" class="btn btn-outline-primary rounded-pill px-4">See More</a>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-3" *ngFor="let product of products.slice(0, 4)">
+      <div class="modern-card h-100 border-0 p-3 bg-white">
+        <div class="position-relative rounded-3 overflow-hidden mb-3 bg-light img-placeholder" style="height: 220px;">
+          <img [src]="product.imageUrl" class="w-100 h-100 object-fit-contain p-2" [alt]="product.name">
+          <span class="position-absolute top-0 end-0 m-2 badge bg-white text-dark shadow-sm rounded-pill fw-bold" *ngIf="product.price > 5000">Hot</span>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <img
-            src="https://www.vedantcomputers.com/image/cache/catalog/assets/product/ant-esports/headset/h1100-pro-rgb-white/h1100-pro-rgb-white-1-800x800.JPG"
-            class="card-img-top" alt="E5000 Pro Gaming Headset">
-          <div class="card-body text-center">
-            <h4 class="card-title">$6000</h4>
-            <p class="card-text">E5 Pro Gaming Headset</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6El109LnpFQneKtAVWobF7hRG_rmRznRETQ&s"
-            class="card-img-top" alt="Vivo Wired EarPhones">
-          <div class="card-body text-center ">
-            <h4 class="card-title">$1000</h4>
-            <p class="card-text">Vivo Wired EarPhones</p>
+        <div class="px-2">
+          <div class="small text-muted mb-1">Category Name</div>
+          <h5 class="fw-bold mb-2">{{ product.name }}</h5>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="h4 fw-bolder text-primary mb-0">${{ product.price }}</span>
+            <button class="btn btn-light btn-sm rounded-pill px-3 fw-bold border" (click)="addToCart(product)">
+              <i class="fa-solid fa-cart-plus me-1 text-primary"></i> Cart
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="container mt-5">
-  <div class="row">
-
-    <div class="col-md-4 text-center mb-4">
-      <img src="https://img.pikbest.com/origin/06/19/54/20JpIkbEsTVZ2.jpg!f305cw" class="card-img-top rounded"
-        alt="Special Offer">
-      <div class="h4 mt-3">Exclusive Offer Just for You</div>
-      <a href="#" class="btn btn-primary mt-3">Shop Now</a>
-    </div>
-
-
-    <div class="col-md-4 text-center mb-2 gap-3 d-flex flex-column justify-content-center promote">
-      <h1 class="text-dark">Discover Exclusive Offers</h1>
-      <h3 class="text-dark">High-Quality Products</h3>
-      <p class="text-light">Don't miss out on amazing deals on our premium products. Shop now and save big!</p>
-    </div>
-
-
-    <div class="col-md-4 text-center mb-4">
-      <img src="https://img.pikbest.com/origin/06/02/42/7pIkbEsTdpIkbEsTmM6.jpg!w700wp" class="card-img-top rounded"
-        alt="Additional Offer">
-      <div class="h4 mt-3">More Deals Available</div>
-      <a href="#" class="btn btn-primary mt-3">Explore More</a>
-    </div>
-  </div>
-</div>
-
-<!-------------------------------main------------------------------------>
-<!-- 
-<div class="container mt-5">
-  <h1 class="h1 mt-5 my-5 text-center">Best Seller</h1>
-  <div class="row">
-
-    <div class="col-md-6 col-lg-3 mb-5 ">
-
-     <div class="ratio ratio-1x1">
-      <img
-      src="https://www.dhresource.com/webp/m/0x0/f2/albu/g22/M00/8C/A5/rBNaEmKy81eAe4DAAAIRpB1rlts480.jpg"
-      class="card-img-top" alt="" >
-     </div>
-      <div class="text-center mt-2">
-        <h4 class="fw-bold">$ 2500</h4>
-        <p class="fs-4">Noise SmartWatch</p>
-        <button class="btn btn-success mt-1" (click)="addToCart()"><i class="fa-solid fa-cart-shopping me-2"></i>Add to cart</button>
+<!-- Footer -->
+<footer class="bg-white pt-5 mt-5 border-top">
+  <div class="container pb-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="navbar-brand fs-3 mb-3 d-block">GadgetHub</div>
+        <p class="text-muted pe-lg-5">Bringing you the finest selection of technology since 2024. Quality and innovation in every click.</p>
+        <div class="d-flex gap-3 mt-4">
+          <a href="#" class="text-secondary fs-5"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-secondary fs-5"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-secondary fs-5"><i class="fab fa-instagram"></i></a>
+        </div>
       </div>
-
-    </div>
-
-
-    <div class="col-md-6 col-lg-3 mb-5">
-
-    <div class="ratio ratio-1x1">
-      <img src="https://thumbs.dreamstime.com/b/minsk-belarus-sep-jbl-headphones-isolated-white-minsk-belarus-sep-jbl-headphones-isolated-white-background-99167347.jpg"
-      class="card-img-top " alt="" >
-    </div>
-      <div class="text-center mt-2">
-        <h4 class="fw-bold">$ 2000</h4>
-        <p class="fs-4">Wisdom Headphones</p>
-        <a href="#" class="btn btn-success mt-1" (click)="addToCart()"><i class="fa-solid fa-cart-shopping me-2"></i>Add to cart</a>
-      </div>
-
-    </div>
-
-    <div class="col-md-6 col-lg-3 mb-5">
-
-     <div class="ratio ratio-1x1">
-      <img
-      src="https://www.itel-india.com/wp-content/uploads/2024/02/124-min-450x450.jpg"
-      class="card-img-top " alt="">
-     </div>
-      <div class="text-center mt-2">
-        <h4 class="fw-bold">$ 20000</h4>
-        <p class="fs-4">Oppo F18 </p>
-        <a href="#" class="btn btn-success mt-1" (click)="addToCart()"><i class="fa-solid fa-cart-shopping me-2"></i>Add to cart</a>
-      </div>
-
-    </div>
-
-
-    <div class="col-md-6 col-lg-3 mb-5">
-
-   <div class="ratio ratio-1x1">
-    <img
-    src="https://telectronics.pk/wp-content/uploads/nc/products/redmi-smart-band-pro-pakistan-telectronics.pk2-430x430.jpg"
-    class="card-img-top" alt="">
-   </div>
-      <div class="text-center mt-2">
-        <h4 class="fw-bold">$ 1000</h4>
-        <p class="fs-4">Hauwei Watch</p>
-        <a href="#" class="btn btn-success mt-1" (click)="addToCart()" ><i class="fa-solid fa-cart-shopping me-2"></i>Add to cart</a>
-      </div>
-
-    </div>
-  </div>
-</div> -->
-<div class="container mt-5">
-  <h1 class="h1 mt-5 my-5 text-center">Best Seller</h1>
-  <div class="row">
-
-    <div class="col-md-6 col-lg-3 mb-5" *ngFor="let product of products">
-      <div class="ratio ratio-1x1">
-        <img [src]="product.imageUrl" class="card-img-top" [alt]="product.name">
-      </div>
-      <div class="text-center mt-2">
-        <h4 class="fw-bold">${{ product.price }}</h4>
-        <p class="fs-4">{{ product.name }}</p>
-        <button class="btn btn-success mt-1" (click)="addToCart(product)">
-          <i class="fa-solid fa-cart-shopping me-2"></i>Add to cart
-        </button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<!----------------------------------footer------------------------------------------------------------->
-<footer class="bg-dark text-light py-5">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <h5 class="text-uppercase mb-3">About GadgetHub</h5>
-        <p class="fs-5">At GadgetHub, we pride ourselves on offering the latest in technology with a commitment to
-          exceptional service. Explore our extensive range of cutting-edge products and stay ahead in the tech world.
-        </p>
-      </div>
-
-      <div class="col-md-4 mb-4 text-center">
-        <h5 class="text-uppercase mb-3">Explore</h5>
-        <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">Home</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">Shop</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">Contact Us</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">FAQs</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">Blog</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block py-1">Careers</a></li>
+      <div class="col-md-2">
+        <h6 class="fw-bold mb-4">Shop</h6>
+        <ul class="list-unstyled text-muted footer-links">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">New Arrivals</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">Laptops</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">Accessories</a></li>
         </ul>
       </div>
-
-      <div class="col-md-4 mb-4 ">
-        <h5 class="text-uppercase mb-3">Connect with Us</h5>
-        <p class="fs-6 mb-2">Stay updated with our latest news and offers. Follow us on our social media channels:</p>
-        <div class="d-flex gap-3 ">
-          <a href="#" class="text-light fs-4"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-light fs-4"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-light fs-4"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-light fs-4"><i class="fab fa-linkedin"></i></a>
+      <div class="col-md-2">
+        <h6 class="fw-bold mb-4">Supporrt</h6>
+        <ul class="list-unstyled text-muted footer-links">
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">Shipping Info</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">Returns</a></li>
+          <li class="mb-2"><a href="#" class="text-decoration-none text-reset">Order Help</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="fw-bold mb-4">Newsletter</h6>
+        <p class="text-muted small">Subscribe to get exclusive offers and tech news.</p>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="Email Address">
+          <button class="btn btn-primary px-4" type="button">Join</button>
         </div>
       </div>
     </div>
-
-    <div class="text-center pt-3 border-top border-light mt-4">
-      <p class="mb-0">&copy; 2024 GadgetHub. Innovating your tech experience. All Rights Reserved.</p>
-      <p class="mb-0">Built with love and passion by GadgetHub Team</p>
+  </div>
+  <div class="py-4 border-top bg-light">
+    <div class="container text-center text-muted small">
+      &copy; 2024 GadgetHub. All Rights Reserved.
     </div>
   </div>
 </footer>

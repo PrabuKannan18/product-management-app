@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { AgentService } from '../service/agent.service';
+import { OrderService } from '../service/order.service';
+import { AuthService } from '../service/auth-service';
+import { ToastService } from '../service/toast.service';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
   imports: [RouterLink, FormsModule, CommonModule],
   templateUrl: './payment.component.html',
-  styleUrls: ['./payment.component.scss']  // Corrected to styleUrls
+  styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent {
 
@@ -32,7 +35,11 @@ export class PaymentComponent {
 
   constructor(
     private agentService: AgentService,
-    private cartService: CartService
+    private cartService: CartService,
+    private orderService: OrderService,
+    private authService: AuthService,
+    private toast: ToastService,
+    private router: Router
   ) {
     this.calculateTotal();
     this.generateOrderNumber();
@@ -49,12 +56,10 @@ export class PaymentComponent {
     }, 0);
   }
 
-
-
   onSubmit(paymentForm: NgForm) {
     if (this.payment.method === 'credit-card') {
       if (!this.payment.cardnumber || !this.payment.expiry || !this.payment.cvv) {
-        alert('Please enter all card details');
+        this.toast.error('Please enter all card details');
         return;
       }
     }
@@ -65,27 +70,51 @@ export class PaymentComponent {
     }
 
     this.processing = true;
+    const user = this.authService.getCurrentUser();
+    const cartItems = this.cartService.getToCart();
+
+    // Build the order object to persist
+    const orderItems = cartItems.map(item => ({
+      productId: item.product.id || '',
+      name: item.product.name,
+      imageUrl: item.product.imageUrl,
+      price: item.product.price,
+      quantity: item.quantity
+    }));
+
+    this.calculateDeliveryDate();
 
     setTimeout(() => {
-      this.processing = false;
-      this.paymentSuccess = true;
-      this.calculateDeliveryDate();
+      if (user) {
+        this.orderService.placeOrder({
+          userId: user.uid,
+          userEmail: user.email || '',
+          items: orderItems,
+          total: this.total,
+          status: 'confirmed',
+          paymentMethod: this.payment.method,
+          deliveryAddress: this.payment.address,
+          orderNumber: this.orderNumber,
+          estimatedDelivery: this.estimatedDeliveryDate || ''
+        }).then(() => {
+          this.cartService.clearCart();
+          this.processing = false;
+          this.paymentSuccess = true;
+        }).catch(() => {
+          this.processing = false;
+          this.toast.error('Failed to place order. Please try again.');
+        });
+      } else {
+        this.processing = false;
+        this.paymentSuccess = true; // still show for guest
+      }
     }, 2000);
   }
 
   calculateDeliveryDate() {
-    const deliveryDays = Math.floor(Math.random() * 6) + 1;
+    const deliveryDays = Math.floor(Math.random() * 6) + 3;
     const today = new Date();
     const deliveryDay = new Date(today.setDate(today.getDate() + deliveryDays));
     this.estimatedDeliveryDate = deliveryDay.toDateString();
   }
-
-  ionViewDidEnter() {
-    this.agentService.logAnalyticsEvent('screen_view', {
-      screen_id: 'app-payment',
-      screen_class: 'PaymentComponent',
-      screen_type: 'Page'
-    })
-  }
-
 }

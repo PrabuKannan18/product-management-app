@@ -1,226 +1,203 @@
-<div class="container py-4">
+<div class="container py-5 fade-in">
     <!-- Loading Overlay -->
     <div *ngIf="processing" class="position-fixed top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex justify-content-center align-items-center" style="z-index: 1050;">
         <div class="text-center">
-            <div class="spinner-border text-success mb-3" style="width: 3rem; height: 3rem;" role="status">
+            <div class="spinner-border text-primary border-3 mb-3" style="width: 3rem; height: 3rem;" role="status">
                 <span class="visually-hidden">Processing...</span>
             </div>
-            <h4 class="text-muted">Processing Payment...</h4>
-            <p class="text-muted">Please wait while we process your payment</p>
+            <h4 class="text-dark fw-bold">Processing Payment...</h4>
+            <p class="text-muted">Please wait while we secure your transaction</p>
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white py-3">
-                    <h2 class="h4 mb-0 text-success">
-                        <i class="fas fa-credit-card me-2"></i>Payment Details
-                    </h2>
+    <div class="row justify-content-center g-4">
+        <!-- Main Form -->
+        <div class="col-lg-7">
+            <div class="modern-card p-4 p-md-5 bg-white">
+                <div class="mb-4">
+                    <h2 class="display-6 fw-bold text-dark mb-1">Checkout</h2>
+                    <p class="text-muted">Complete your order safely</p>
                 </div>
-                <div class="card-body p-4">
-                    <form #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)" novalidate>
-                        <!-- Personal Information -->
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-12">
-                                <h5 class="text-uppercase text-muted mb-4">
-                                    <i class="fas fa-user-circle me-2"></i>Personal Information
-                                </h5>
-                            </div>
-                            
+                
+                <form #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)" novalidate>
+                    <!-- Personal Information -->
+                    <div class="mb-5">
+                        <h5 class="fw-bold mb-4 border-bottom pb-2 text-dark d-flex align-items-center gap-2">
+                            <span class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 0.9rem;">1</span>
+                            Delivery Information
+                        </h5>
+                        
+                        <div class="row g-4">
                             <div class="col-md-6">
                                 <label for="name" class="form-label fw-semibold">Full Name</label>
-                                <input type="text" id="name" class="form-control form-control-lg" 
+                                <input type="text" id="name" class="form-control bg-light" 
                                        [(ngModel)]="payment.name" name="name" #name="ngModel" 
-                                       placeholder="John Doe" required>
-                                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback d-block">
-                                    <i class="fas fa-exclamation-circle me-1"></i>Name is required
+                                       placeholder="Jane Doe" required>
+                                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>Name is required
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="phone" class="form-label fw-semibold">Phone Number</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                    <input type="tel" id="phone" class="form-control form-control-lg" 
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-phone"></i></span>
+                                    <input type="tel" id="phone" class="form-control bg-light border-start-0 ps-0" 
                                            [(ngModel)]="payment.phone" name="phone" #phone="ngModel"
-                                           placeholder="+91 9876543210" required>
+                                           placeholder="+1 (555) 000-0000" required>
                                 </div>
-                                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback d-block">
-                                    <i class="fas fa-exclamation-circle me-1"></i>Phone number is required
+                                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>Phone number is required
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <label for="address" class="form-label fw-semibold">Delivery Address</label>
-                                <textarea id="address" rows="3" class="form-control form-control-lg" 
+                                <textarea id="address" rows="3" class="form-control bg-light" 
                                           [(ngModel)]="payment.address" name="address" #address="ngModel"
-                                          placeholder="Enter your complete delivery address" required></textarea>
-                                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="invalid-feedback d-block">
-                                    <i class="fas fa-exclamation-circle me-1"></i>Address is required
+                                          placeholder="Enter your full street address, apartment, city, and zip code" required></textarea>
+                                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="text-danger small mt-2 fw-semibold fade-in">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>Address is required
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Card Details (Conditional) -->
-                        <div *ngIf="payment.method === 'credit-card'" class="mb-4 p-4 bg-light rounded-3">
-                            <h5 class="text-uppercase text-muted mb-4">
-                                <i class="far fa-credit-card me-2"></i>Card Details
-                            </h5>
-                            <div class="row g-3">
-                                <div class="col-md-8">
-                                    <label class="form-label fw-semibold">Card Number</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="far fa-credit-card"></i></span>
-                                        <input type="text" class="form-control form-control-lg" 
-                                               [(ngModel)]="payment.cardnumber" name="cardNumber"
-                                               placeholder="1234 5678 9012 3456" required>
+                    <!-- Payment Method -->
+                    <div class="mb-5">
+                        <h5 class="fw-bold mb-4 border-bottom pb-2 text-dark d-flex align-items-center gap-2">
+                            <span class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 0.9rem;">2</span>
+                            Payment Method
+                        </h5>
+                        
+                        <div class="d-flex flex-column gap-3">
+                            <!-- Credit/Debit Card -->
+                            <label class="modern-card p-3 d-flex align-items-center cursor-pointer border-opacity-50" [ngClass]="payment.method === 'credit-card' ? 'border-primary bg-primary bg-opacity-10' : ''">
+                                <input class="form-check-input me-3" type="radio" 
+                                       name="paymentMethod" value="credit-card"
+                                       [(ngModel)]="payment.method">
+                                <div class="d-flex align-items-center justify-content-between w-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-white shadow-sm p-2 rounded me-3" style="width: 45px; text-align: center;">
+                                            <i class="far fa-credit-card text-primary fs-5"></i>
+                                        </div>
+                                        <div class="fw-bold text-dark">Credit/Debit Card</div>
                                     </div>
+                                    <div class="text-muted small">All cards supported</div>
                                 </div>
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold">Expiry</label>
-                                    <input type="text" class="form-control form-control-lg" 
-                                           [(ngModel)]="payment.expiry" name="expiry"
-                                           placeholder="MM/YY" required>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label fw-semibold">CVV</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control form-control-lg" 
-                                               [(ngModel)]="payment.cvv" name="cvv" 
-                                               placeholder="123" required>
-                                        <span class="input-group-text">
-                                            <i class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </label>
 
-                        <!-- Payment Methods -->
-                        <div class="mb-4">
-                            <h5 class="text-uppercase text-muted mb-3">
-                                <i class="fas fa-wallet me-2"></i>Select Payment Method
-                            </h5>
+                            <!-- Pay on Delivery -->
+                            <label class="modern-card p-3 d-flex align-items-center cursor-pointer border-opacity-50" [ngClass]="payment.method === 'cash-on-delivery' ? 'border-primary bg-primary bg-opacity-10' : ''">
+                                <input class="form-check-input me-3" type="radio" 
+                                       name="paymentMethod" value="cash-on-delivery" 
+                                       [(ngModel)]="payment.method">
+                                <div class="d-flex align-items-center justify-content-between w-100">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-white shadow-sm p-2 rounded me-3" style="width: 45px; text-align: center;">
+                                            <i class="fa-solid fa-truck text-success fs-5"></i>
+                                        </div>
+                                        <div class="fw-bold text-dark">Pay on Delivery</div>
+                                    </div>
+                                    <div class="text-muted small">Cash or Card on receipt</div>
+                                </div>
+                            </label>
                             
-                            <div class="list-group mb-3">
-                                <!-- Cash on Delivery -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="cash-on-delivery" name="paymentMethod" value="cash-on-delivery" 
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="fas fa-truck text-primary fa-lg"></i>
+                            <!-- Digital Wallets -->
+                            <label class="modern-card p-3 d-flex align-items-center cursor-pointer border-opacity-50" [ngClass]="payment.method === 'digital' ? 'border-primary bg-primary bg-opacity-10' : ''">
+                                <input class="form-check-input flex-shrink-0 me-3" type="radio" 
+                                    name="paymentMethod" value="digital"
+                                    [(ngModel)]="payment.method">
+                                <div class="d-flex align-items-center w-100 justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-white shadow-sm p-2 rounded me-3" style="width: 45px; text-align: center;">
+                                            <i class="fas fa-wallet text-info fs-5"></i>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0 fw-semibold">Cash On Delivery</h6>
-                                            <small class="text-muted">Pay when you receive your order</small>
+                                            <h6 class="mb-0 fw-bold text-dark">Digital Wallets</h6>
                                         </div>
                                     </div>
-                                </label>
+                                    <small class="text-muted">Paytm, Google Pay & more</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
 
-                                <!-- Credit/Debit Card -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="credit-card" name="paymentMethod" value="credit-card"
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="far fa-credit-card text-primary fa-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">Credit/Debit Card</h6>
-                                            <div class="d-flex mt-1">
-                                                <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@d5c68edec1f5eaec59ac77fffc6d481cd6bc4a2e/svg/color/visa.svg" alt="Visa" class="me-2" style="height: 20px;">
-                                                <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@d5c68edec1f5eaec59ac77fffc6d481cd6bc4a2e/svg/color/mastercard.svg" alt="Mastercard" style="height: 20px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <!-- UPI -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="upi" name="paymentMethod" value="upi"
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="fas fa-mobile-alt text-primary fa-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">UPI</h6>
-                                            <small class="text-muted">Pay using any UPI app</small>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <!-- Net Banking -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="net" name="paymentMethod" value="net"
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="fas fa-university text-primary fa-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">Net Banking</h6>
-                                            <small class="text-muted">All major banks supported</small>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <!-- Digital Wallets -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="digital-wallet" name="paymentMethod" value="digital"
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="fas fa-wallet text-primary fa-lg"></i>
-                                        </div>
-                                        <div class="d-flex justify-content-between w-100">
-                                            <div>
-                                                <h6 class="mb-0 fw-semibold">Digital Wallets</h6>
-                                                <small class="text-muted">Paytm, Google Pay, PhonePe & more</small>
-                                            </div>
-                                            <div class="d-flex">
-                                                <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@d5c68edec1f5eaec59ac77fffc6d481cd6bc4a2e/svg/color/paypal.svg" alt="PayPal" class="me-2" style="height: 20px;">
-                                                <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@d5c68edec1f5eaec59ac77fffc6d481cd6bc4a2e/svg/color/googlepay.svg" alt="Google Pay" style="height: 20px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <!-- EMI -->
-                                <label class="list-group-item list-group-item-action d-flex align-items-center p-3">
-                                    <input class="form-check-input flex-shrink-0 me-3" type="radio" 
-                                           id="emi" name="paymentMethod" value="emi"
-                                           [(ngModel)]="payment.method">
-                                    <div class="d-flex align-items-center w-100">
-                                        <div class="bg-light p-2 rounded-3 me-3">
-                                            <i class="fas fa-credit-card text-primary fa-lg"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">EMI</h6>
-                                            <small class="text-muted">Easy monthly installments</small>
-                                        </div>
-                                    </div>
-                                </label>
+                    <!-- Card Details (Conditional) -->
+                    <div *ngIf="payment.method === 'credit-card'" class="mb-5 p-4 bg-light rounded-4 border fade-in">
+                        <h6 class="fw-bold mb-3 text-dark">Card Details</h6>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted small fw-semibold">Card Name</label>
+                                <input type="text" class="form-control border-0 shadow-sm" placeholder="Name on Card">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted small fw-semibold">Card Number</label>
+                                <div class="input-group shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-muted"><i class="far fa-credit-card"></i></span>
+                                    <input type="text" class="form-control border-0 border-start ps-0" 
+                                           [(ngModel)]="payment.cardnumber" name="cardNumber"
+                                           placeholder="0000 0000 0000 0000" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-semibold">Expiry Date</label>
+                                <input type="text" class="form-control border-0 shadow-sm" 
+                                       [(ngModel)]="payment.expiry" name="expiry"
+                                       placeholder="MM / YY" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-semibold">CVV / CVC</label>
+                                <div class="input-group shadow-sm">
+                                    <input type="password" class="form-control border-0" 
+                                           [(ngModel)]="payment.cvv" name="cvv" 
+                                           placeholder="123" required>
+                                    <span class="input-group-text bg-white border-0 text-muted">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Action Buttons -->
-                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                            <button type="button" class="btn btn-outline-secondary btn-lg" routerLink="/cart">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Cart
-                            </button>
-                            <button type="submit" class="btn btn-success btn-lg px-5">
-                                <i class="fas fa-lock me-2"></i>Pay {{ total | currency }}
-                            </button>
-                        </div>
-                    </form>
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-5 pt-3 border-top gap-3">
+                        <button type="button" class="btn btn-outline-secondary px-4 rounded-pill" routerLink="/cart">
+                            <i class="fa-solid fa-arrow-left me-2"></i>Return to Cart
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm fw-bold">
+                            Complete Order <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary side panel -->
+        <div class="col-lg-5 col-xl-4">
+            <div class="modern-card p-4 bg-light border-0 sticky-top" style="top: 100px;">
+                <h5 class="fw-bold mb-4 pt-2 text-dark">Payment Summary</h5>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                <span>Subtotal</span>
+                <span class="fw-semibold text-dark">{{ total | currency }}</span>
+                </div>
+                
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                <span>Delivery Option</span>
+                <span class="text-success fw-semibold">Standard Free</span>
+                </div>
+                
+                <hr class="mb-4">
+                
+                <div class="d-flex justify-content-between mb-4 border-bottom pb-4">
+                <span class="fs-5 fw-bold text-dark">Total</span>
+                <span class="fs-4 fw-bolder text-primary">{{ total | currency }}</span>
+                </div>
+                
+                <div class="bg-white p-4 rounded-3 text-center border shadow-sm">
+                    <i class="fa-solid fa-shield-halved fs-3 text-success mb-2"></i>
+                    <h6 class="fw-bold text-dark mb-1">Secure Transaction</h6>
+                    <p class="small text-muted mb-0 fw-semibold">Your transaction is safely encrypted by industry standard protocols.</p>
                 </div>
             </div>
         </div>
@@ -228,41 +205,33 @@
 </div>
 
 <!-- Payment Success Modal -->
-<div *ngIf="paymentSuccess" class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-body p-5 text-center">
-                <div class="position-relative mb-4">
-                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
-                    </div>
+<div *ngIf="paymentSuccess" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50 fade-in" style="z-index: 1060; backdrop-filter: blur(5px);">
+    <div class="modern-card bg-white p-0 border-0 shadow-lg" style="max-width: 500px; width: 90%;">
+        <div class="p-5 text-center">
+            <div class="mb-4 d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle" style="width: 100px; height: 100px;">
+                <i class="fa-solid fa-check fs-1"></i>
+            </div>
+            
+            <h2 class="fw-bold text-dark mb-3">Order Confirmed!</h2>
+            <p class="text-muted mb-4 fs-6">Thank you for your purchase. We've received your order and are getting it ready to ship.</p>
+            
+            <div class="bg-light p-4 rounded-4 mb-4 text-start border shadow-sm">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <span class="text-muted small text-uppercase fw-bold">Order Details</span>
                 </div>
-                <h3 class="fw-bold text-success mb-3">Payment Successful!</h3>
-                <p class="text-muted mb-4">Thank you for your purchase! Your order has been received and is being processed.</p>
-                
-                <div class="bg-light p-4 rounded-3 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Order Number:</span>
-                        <strong>{{ orderNumber }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted">Estimated Delivery:</span>
-                        <span class="fw-bold text-dark">{{ estimatedDeliveryDate }}</span>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted fw-semibold">Order Number:</span>
+                    <strong class="text-dark">{{ orderNumber }}</strong>
                 </div>
-                
-                <p class="text-muted small mb-4">We've sent an order confirmation to your email.</p>
-                
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <a routerLink="/orders" class="btn btn-outline-primary px-4 me-sm-3">
-                        <i class="fas fa-clipboard-list me-2"></i>View Orders
-                    </a>
-                    <a routerLink="/" class="btn btn-success px-4">
-                        <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
-                    </a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted fw-semibold">Delivery By:</span>
+                    <span class="text-primary fw-bold">{{ estimatedDeliveryDate }}</span>
                 </div>
             </div>
+            
+            <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm fw-bold mt-2" routerLink="/">
+                Continue Shopping
+            </button>
         </div>
     </div>
 </div>
-<div *ngIf="paymentSuccess" class="modal-backdrop fade show"></div>

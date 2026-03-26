@@ -1,81 +1,200 @@
-<div class="container my-5">
-  <div class="text-center mb-5">
-    <h2 class="display-4 fw-bold text-primary mb-3">Product Details</h2>
-    <p class="lead text-muted">Get comprehensive information about this premium product</p>
+<div class="container py-5 fade-in">
+  <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary border-3" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
   </div>
 
-  <div *ngIf="loading"
-    class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center"
-    style="opacity: 0.95; z-index: 9999;">
-    <div class="text-center">
-      <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-        <span class="visually-hidden">Loading...</span>
+  <div *ngIf="!loading && product" class="modern-card p-4 p-md-5 bg-white border-0">
+      <div class="row g-5">
+          <!-- Product Image & Wishlist -->
+          <div class="col-md-6 text-center text-md-start position-relative">
+              <div class="bg-light rounded-4 p-4 p-md-5 d-flex align-items-center justify-content-center img-placeholder" style="min-height: 400px; height: 100%;">
+                  <img [src]="product.imageUrl" class="img-fluid object-fit-contain" [alt]="product.name" style="max-height: 400px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));">
+              </div>
+
+              <!-- Wishlist Floating Button -->
+              <button class="btn btn-light position-absolute top-0 end-0 m-4 rounded-circle shadow-sm d-flex align-items-center justify-content-center border-0"
+                  style="width: 48px; height: 48px; z-index: 5; transition: transform 0.2s ease-in-out;"
+                  [disabled]="wishlistLoading"
+                  (click)="toggleWishlist()"
+                  title="Toggle Wishlist"
+                  [ngClass]="isWishlisted ? 'text-danger' : 'text-muted'">
+                  <i class="fs-4" [ngClass]="isWishlisted ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+              </button>
+          </div>
+
+          <!-- Product Details -->
+          <div class="col-md-6 d-flex flex-column justify-content-center">
+              <div class="mb-3 d-flex align-items-center gap-3">
+                  <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold border border-primary border-opacity-25">
+                      New Arrival
+                  </span>
+                  <!-- Reviews Summary Badge -->
+                  <div class="d-flex align-items-center gap-1 text-warning fw-bold bg-light px-3 py-1 rounded-pill" *ngIf="!reviewsLoading && reviews.length > 0">
+                      <i class="fa-solid fa-star"></i> {{ averageRating }}
+                      <span class="text-muted fw-normal ms-1 small">({{ reviews.length }})</span>
+                  </div>
+              </div>
+
+              <h1 class="display-5 fw-bold text-dark mb-3 lh-sm">{{ product.name }}</h1>
+              
+              <div class="fs-1 fw-bolder text-primary mb-4 d-flex align-items-center gap-3">
+                  ${{ product.price }}
+                  <span class="fs-5 text-muted text-decoration-line-through opacity-75 fw-normal">${{ product.price * 1.2 | number:'1.0-0' }}</span>
+              </div>
+              
+              <p class="lead text-muted mb-4 lh-base" style="font-size: 1.1rem;">{{ product.description }}</p>
+
+              <!-- Stock Status -->
+              <div class="mb-4 d-flex align-items-center">
+                  <div class="d-flex align-items-center bg-light px-4 py-3 rounded-4 border w-100">
+                      <div class="me-3 fs-3" [ngClass]="product.quantity > 0 ? 'text-success' : 'text-danger'">
+                          <i class="fa-solid" [ngClass]="product.quantity > 0 ? 'fa-box-check' : 'fa-box-archive'"></i>
+                      </div>
+                      <div>
+                          <h6 class="mb-0 fw-bold text-dark">Availability</h6>
+                          <span class="fw-semibold" [ngClass]="product.quantity > 0 ? 'text-success' : 'text-danger'">
+                              {{ product.quantity > 0 ? 'In Stock (' + product.quantity + ' available)' : 'Out of Stock' }}
+                          </span>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Owner badge -->
+              <div class="mb-4" *ngIf="isOwnProduct()">
+                  <span class="badge bg-warning bg-opacity-10 text-dark px-4 py-3 rounded-pill fw-bold border border-warning border-opacity-50">
+                      <i class="fa-solid fa-pen-to-square mx-2 text-warning"></i> You are the owner of this product listing
+                  </span>
+              </div>
+
+              <!-- Actions -->
+              <div class="d-flex flex-column gap-3 mt-2">
+                  <!-- Add to Cart: shown only to other users -->
+                  <button *ngIf="!isOwnProduct()" class="btn btn-primary btn-lg rounded-pill shadow-sm py-3 fw-bold d-flex justify-content-center align-items-center gap-2"
+                      [disabled]="product.quantity === 0"
+                      (click)="addToCart()">
+                      <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+                  </button>
+
+                  <button *ngIf="!isOwnProduct()" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold d-flex justify-content-center align-items-center gap-2"
+                      (click)="toggleWishlist()">
+                      <i [ngClass]="isWishlisted ? 'fa-solid text-danger' : 'fa-regular'" class="fa-heart"></i>
+                      {{ isWishlisted ? 'Saved to Wishlist' : 'Save for Later' }}
+                  </button>
+
+                  <!-- Delete: shown only to owner -->
+                  <button *ngIf="isOwnProduct()" class="btn btn-outline-danger btn-lg rounded-pill fw-bold d-flex justify-content-center align-items-center gap-2"
+                      (click)="deleteProduct()">
+                      <i class="fa-regular fa-trash-can"></i> Delete My Product
+                  </button>
+              </div>
+
+              <!-- Highlights -->
+              <div class="mt-5 pt-4 border-top">
+                  <div class="row g-3">
+                      <div class="col-6">
+                          <div class="d-flex align-items-center text-muted">
+                              <i class="fa-solid fa-shield-halved text-success me-2 fs-5"></i>
+                              <span class="fw-semibold small">1 Year Warranty</span>
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="d-flex align-items-center text-muted">
+                              <i class="fa-solid fa-truck-fast text-primary me-2 fs-5"></i>
+                              <span class="fw-semibold small">Free Shipping</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-      <h4 class="text-muted">Loading Product Details...</h4>
-      <p class="text-muted">Please wait while we fetch the product information</p>
-    </div>
   </div>
 
-  <div class="row g-5 align-items-center">
-    <div class="col-lg-6">
-      <div class="card border-0 shadow-lg">
-        <div class="card-body p-4">
-          <div class="ratio ratio-4x3 bg-light rounded-3 overflow-hidden">
-            <img [src]="product?.imageUrl" class="img-fluid object-fit-cover" alt="{{product?.name}}">
+  <!-- Reviews Section -->
+  <div *ngIf="!loading && product" class="modern-card p-4 p-md-5 mt-5 bg-white border-0">
+      <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-4">
+          <div>
+              <h3 class="fw-bold text-dark mb-1">Customer Reviews</h3>
+              <div class="d-flex align-items-center gap-2" *ngIf="!reviewsLoading">
+                  <div class="text-warning fs-5">
+                      <i class="fa-solid fa-star" *ngFor="let i of [1,2,3,4,5]" [ngClass]="{'text-warning': averageRating >= i, 'text-muted opacity-25': averageRating < i}"></i>
+                  </div>
+                  <span class="fw-bold fs-5 ms-2">{{ averageRating }}</span>
+                  <span class="text-muted">based on {{ reviews.length }} reviews</span>
+              </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-6">
-      <div class="ps-lg-4">
-        <div class="mb-4">
-          <h1 class="display-5 fw-bold text-dark mb-3">{{product?.name}}</h1>
-          <div class="d-flex align-items-center mb-3">
-            <span class="h3 text-primary fw-bold me-3">${{product?.price}}</span>
-            <span class="badge bg-success fs-6" *ngIf="product && product.quantity > 0">In Stock</span>
-            <span class="badge bg-danger fs-6" *ngIf="product && product.quantity === 0">Out of Stock</span>
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <h5 class="fw-semibold text-muted mb-2">Product Description</h5>
-          <p class="fs-5 text-secondary">{{product?.description}}</p>
-        </div>
-
-        <div class="mb-4">
-          <h5 class="fw-semibold text-muted mb-2">Available Quantity</h5>
-          <div class="d-flex align-items-center">
-            <span class="fs-4 fw-bold text-info">{{product?.quantity}}</span>
-            <span class="ms-2 text-muted">units available</span>
-          </div>
-        </div>
-
-        <div class="d-flex flex-column gap-3 mb-4">
-          <button class="btn btn-success btn-lg w-100"
-            [disabled]="product?.addedBy === currentUser?.email || product?.quantity === 0"
-            (click)="addToCart()">
-            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+          
+          <button *ngIf="currentUser && !isOwnProduct() && !hasUserReviewed() && !showReviewForm"
+              class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm"
+              (click)="showReviewForm = true">
+              Leave a Review
           </button>
-
-          <button *ngIf="product?.addedBy === currentUser?.email"
-            class="btn btn-danger btn-lg w-100"
-            (click)="deleteProduct()">
-            <i class="bi bi-trash me-2"></i>Delete Product
-          </button>
-        </div>
-
-        <div class="alert alert-warning" *ngIf="product?.quantity === 0">
-          <i class="bi bi-exclamation-triangle-fill me-2"></i>
-          <strong>Out of stock:</strong> This product is currently unavailable. Please check back later.
-        </div>
-
-        <div class="mt-4">
-          <a routerLink="/products" class="btn btn-outline-primary btn-lg">
-            <i class="bi bi-arrow-left me-2"></i>Back to Products
-          </a>
-        </div>
       </div>
-    </div>
+
+      <!-- Add Review Form -->
+      <div *ngIf="showReviewForm" class="bg-light p-4 rounded-4 mb-5 border fade-in">
+          <h5 class="fw-bold text-dark mb-3">Write a Review</h5>
+          
+          <div class="mb-3">
+              <label class="form-label text-muted fw-semibold mb-2">Your Rating</label>
+              <div class="fs-3 text-warning cursor-pointer" style="display: inline-flex; gap: 4px;" (mouseleave)="clearHover()">
+                  <i *ngFor="let star of [1,2,3,4,5]" 
+                     class="fa-star" 
+                     [ngClass]="(hoverRating || newRating) >= star ? 'fa-solid text-warning' : 'fa-regular text-muted opacity-50'"
+                     (mouseenter)="setHover(star)"
+                     (click)="setRating(star)"></i>
+              </div>
+          </div>
+
+          <div class="mb-4">
+              <label class="form-label text-muted fw-semibold">Your Comment</label>
+              <textarea class="form-control border-0 shadow-sm rounded-3 p-3" rows="3" 
+                        [(ngModel)]="newComment" placeholder="What did you like or dislike?"></textarea>
+          </div>
+
+          <div class="d-flex gap-3">
+              <button class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm" [disabled]="submittingReview || !newComment.trim()" (click)="submitReview()">
+                  <span *ngIf="submittingReview" class="spinner-border spinner-border-sm me-2"></span>
+                  Submit Review
+              </button>
+              <button class="btn btn-light rounded-pill px-4 fw-bold border" (click)="showReviewForm = false">Cancel</button>
+          </div>
+      </div>
+
+      <!-- Reviews Loading -->
+      <div class="text-center py-5" *ngIf="reviewsLoading">
+          <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <!-- Empty Reviews -->
+      <div class="text-center py-5 bg-light rounded-4 border-dashed border" *ngIf="!reviewsLoading && reviews.length === 0">
+          <div class="d-inline-flex bg-white rounded-circle p-4 mb-3 shadow-sm text-warning fs-1">
+              <i class="fa-regular fa-star"></i>
+          </div>
+          <h5 class="fw-bold text-dark">No reviews yet</h5>
+          <p class="text-muted mb-0">Be the first to review this product!</p>
+      </div>
+
+      <!-- Reviews List -->
+      <div class="d-flex flex-column gap-4" *ngIf="!reviewsLoading && reviews.length > 0">
+          <div class="p-4 rounded-4 border bg-white" *ngFor="let review of reviews">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div class="d-flex align-items-center gap-3">
+                      <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-5 shadow-sm" style="width: 45px; height: 45px;">
+                          {{ review.userEmail.charAt(0).toUpperCase() }}
+                      </div>
+                      <div>
+                          <div class="fw-bold text-dark mb-1">{{ review.userEmail.split('@')[0] }}</div>
+                          <div class="text-warning small" style="letter-spacing: 2px;">
+                              <i *ngFor="let i of [1,2,3,4,5]" class="fa-star" [ngClass]="review.rating >= i ? 'fa-solid' : 'fa-regular'"></i>
+                          </div>
+                      </div>
+                  </div>
+                  <span class="text-muted small fw-semibold bg-light px-3 py-1 rounded-pill">{{ review.createdAt?.toDate ? (review.createdAt.toDate() | date:'mediumDate') : 'Just now' }}</span>
+              </div>
+              <p class="mb-0 text-dark lh-base" style="font-size: 1.05rem;">{{ review.comment }}</p>
+          </div>
+      </div>
   </div>
 </div>

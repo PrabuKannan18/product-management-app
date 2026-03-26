@@ -27,7 +27,7 @@ export class ProductService {
       return setDoc(doc(this.firestore, `products/${id}`), {
         ...product,
         id,
-        addedBy: user.displayName || user.email
+        addedBy: user.email  // always store email for consistent comparison
       });
     }
     return Promise.reject('User not logged in');

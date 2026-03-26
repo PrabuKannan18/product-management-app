@@ -1,0 +1,95 @@
+<div class="container my-5 fade-in">
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary border-3" style="width: 3rem; height: 3rem;" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && !user" class="text-center py-5">
+    <h3 class="fw-bold">Please log in to view your profile</h3>
+    <a routerLink="/user-auth" class="btn btn-primary mt-3 px-4 rounded-pill">Log In</a>
+  </div>
+
+  <div *ngIf="!loading && user" class="row border-0 gx-5">
+    
+    <!-- Left Sidebar: User Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="modern-card p-4 text-center bg-white border-0 sticky-top" style="top: 100px;">
+        <div class="d-inline-flex bg-primary bg-opacity-10 text-primary rounded-circle mb-4 align-items-center justify-content-center fw-bold display-4 shadow-sm"
+             style="width: 120px; height: 120px;">
+          {{ user.email.charAt(0).toUpperCase() }}
+        </div>
+        <h4 class="fw-bold text-dark mb-1">{{ user.displayName || user.email.split('@')[0] }}</h4>
+        <p class="text-muted mb-4 pb-4 border-bottom">{{ user.email }}</p>
+
+        <!-- Stats -->
+        <div class="row g-3 text-center mb-4">
+          <div class="col-6">
+            <div class="bg-light rounded-4 p-3 border h-100">
+              <i class="fa-solid fa-box text-primary fs-4 mb-2"></i>
+              <h3 class="fw-bold text-dark mb-0">{{ myOrders.length }}</h3>
+              <p class="text-muted small fw-semibold text-uppercase mb-0 mt-1">Orders</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="bg-light rounded-4 p-3 border h-100">
+              <i class="fa-solid fa-list-check text-success fs-4 mb-2"></i>
+              <h3 class="fw-bold text-dark mb-0">{{ myProducts.length }}</h3>
+              <p class="text-muted small fw-semibold text-uppercase mb-0 mt-1">Listings</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-light rounded-4 p-3 border d-flex justify-content-between align-items-center">
+          <div class="text-start">
+            <p class="text-muted small fw-semibold mb-0 text-uppercase">Total Spent</p>
+            <h4 class="fw-bold text-primary mb-0">${{ getTotalSpent() }}</h4>
+          </div>
+          <i class="fa-solid fa-wallet text-info opacity-50 display-5"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Content: Listed Products -->
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <h3 class="fw-bold text-dark mb-0">My Listed Products <span class="badge bg-primary fs-6 align-middle ms-2">{{ myProducts.length }}</span></h3>
+        <a routerLink="/add-product" class="btn btn-outline-primary rounded-pill btn-sm px-3 fw-bold shadow-sm">
+          <i class="fa-solid fa-plus me-1"></i> Add New
+        </a>
+      </div>
+
+      <div class="text-center py-5 bg-light rounded-4 border-dashed border" *ngIf="myProducts.length === 0">
+        <div class="d-inline-flex bg-white rounded-circle p-4 mb-3 shadow-sm text-muted">
+            <i class="fa-solid fa-store fs-1"></i>
+        </div>
+        <h5 class="fw-bold text-dark">You haven't listed any products</h5>
+        <p class="text-muted mb-0">Products you add to the store will appear here.</p>
+      </div>
+
+      <div class="row g-4" *ngIf="myProducts.length > 0">
+        <div class="col-md-6" *ngFor="let product of myProducts">
+          <div class="modern-card d-flex align-items-center gap-3 p-3 bg-white h-100 transition-hover border" style="cursor: pointer;" [routerLink]="['/product', product.id]">
+            <!-- Image -->
+            <div class="bg-light rounded-3 d-flex align-items-center justify-content-center p-2 img-placeholder flex-shrink-0" style="width: 100px; height: 100px;">
+              <img [src]="product.imageUrl" class="w-100 h-100 object-fit-contain mix-blend-multiply" [alt]="product.name">
+            </div>
+            
+            <!-- Details -->
+            <div class="min-w-0 d-flex flex-column h-100 justify-content-center">
+              <h6 class="fw-bold text-dark text-truncate mb-1">{{ product.name }}</h6>
+              <div class="text-primary fw-bolder mb-2">${{ product.price }}</div>
+              
+              <div class="d-flex align-items-center gap-2 mt-auto">
+                <span class="badge" [ngClass]="product.quantity > 0 ? 'bg-success bg-opacity-10 text-success border border-success border-opacity-25' : 'bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25'">
+                  {{ product.quantity > 0 ? 'In Stock (' + product.quantity + ')' : 'Out of Stock' }}
+                </span>
+                <span class="ms-auto pe-2 text-muted float-end" title="View Details">
+                  <i class="fa-solid fa-chevron-right fs-6"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

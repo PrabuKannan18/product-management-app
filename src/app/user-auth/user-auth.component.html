@@ -1,74 +1,79 @@
-<div class="container mt-5">
-
-    <div *ngIf="loading"
-        class="position-fixed top-0 start-0 w-100 h-100 bg-light d-flex justify-content-center align-items-center"
-        style="opacity: 0.9; ">
-        <button class="btn btn-success" type="button">
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span role="status">Loading...</span>
-        </button>
-    </div>
-
-
-
-    <div class="row justify-content-center align-items-center  ">
-        <div class="col-md-7 col-lg-5 shadow p-5 m-5">
-
-            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-                <div class="mb-3 text-center">
-                    <h2 class="text-danger">Log in</h2>
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email: </label>
-                    <input type="email" class="form-control" name="email" id="email" formControlName="email">
-                    <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched"
-                        class="text-danger mt-2">
-                        Email is Required
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">password: </label>
-                    <input type="password" class="form-control" name="password" id="password"
-                        formControlName="password">
-                    <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched"
-                        class="text-danger mt-2">
-                        Password is Required
-                    </div>
-                </div>
-
-                <a class="text" (click)="passwordReset()">Forget Password?</a>
-
-                <div class="mb-3 mt-2 text-center d-grid">
-                    <button class="btn btn-primary p-1 fs-5" type="submit">Log In</button>
-                </div>
-
-                <p class="text-center mt-2">Don't have an account? <a href="/user-auth" routerLink="/create">Sign up</a>
-                </p>
-                <div class="d-grid gap-2">
-                    <!-- Google Login Button -->
-                    <button class="btn w-100 d-flex align-items-center justify-content-center" (click)="signInWithGoogle()">
-                        <img src="https://cdn-icons-png.flaticon.com/256/720/720255.png" class="me-2"
-                            style="width: 24px; height: 24px;" alt="Google Logo">
-                        Log in with Google
-                    </button>
-                <button class="btn w-100 d-flex align-items-center justify-content-center ms-2">
-                    <img class="XNo5Ab me-2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD30lEQVR4AayShW4cMRCGLQgzHArKDK9xor5KnyDMSZmZmZmZRWWuKMy8e3y7U8/KvXG6PlR+6dM3Wtv/tElYulnzHXI918HnvQZ7PNfgGfdvz1XQEJzFtz14B++y+crCO+D2XoG97ssw475swhwuGWSOK26T3zX24luWbZbehTxe1uS+YOiuCzGwOB+3mA2yAvcFU8cO7Mrsf30R3Lz4nfMcL+eglZyNkm3QGXZhJ0snzrOw3nE61uc4zQs4wmKOxC3PaIszZA4/I2On6zSsY8ni4P9Kx6loX/WJMCCOk5G47dCZ+r79HLtxR8LfueN45F318TDEORYiW4TJHBcvbf8QhT/TJoRiJkQME2bCJvRpJnwaM8TbuX24Q/k3wS82VR0JwRwOB8nSjF5xJgRvhgxIEtEj3kngLibHcQzc1YdDetWhICSj8iD5UW8MUsX+PoBGdNzJ/qXqQHBv5f4AVHCEBX4yp1LMG26EIJ2I+2hpFn18J8OsuQi5lXv9MxV7/ZAul35HIY0k7cCduJtV7tN95bt0sNgdt5g1sjR/GrX/+E9+j8DyI35xV7eh6q/cpftY2Q5tDwfSoVxYj5jwf5Yf4qV0j+bknXtY2bbZZxxIh9KtlkERfjaD52QFcgdSvl17xkq3zP4u3TwDSAlZAZ2pgmeZgrtZ6aZpraRrGpR0kuVZFTpXv1eBu1lpx5RW3DEFFu1kmWzSM21AiehC04wWc/uUxorbpn4XtU6CiuLWKcvZ5HVPxN7ZQkZwNytqnnxW1DwBSGETWSabnPsSkjuV4G5W2DC+hwPJyCZdL/22ngLJYt7DihonfAW1Y2BRR5bJJhtvaeL9OFoJ7mZrGiC3sHb8b6vlcdswFATRL2ZCDagAX12H+3DOOWe7A8d2fFQZlsRMXpzu6z8kVnGdPcDgDbRJ5InP/nFB3lFOTMlck1TVuW8gD8wzcRO3FeQfFvfeQUbeQU5M2K0yOGBJXlVjcmaO1HFTsernecPZTd/c3ZQ0CeTM7M+S3L0MNWbpT/a94abql7ebXDrburidECiZa5LsspZUZO+kzNI2Z31r9JPsmlx7M2namzHZG7J1vaQkp6qBff09csYN3FKS6jt5w1mPA2stos8sCb/b6zFzIPMcduOG+kzORjpurUaBtRKRuRwSsz8LqnpWQuaoV8MAu9V3VF/MG9Zi2DQXAxrwUlhSENeZA7aWwyY/+bc1tkKu/hOXxkLwZswHVLlTUlINNW0mjFnswC71W+FtGLOd+9ps+7k2qw/MtEmSrlNZB+c6z5jBrPo3nZNjzXQm1FTrjgSp6dYDakr3oFd9U+9y1lO9tTZT6gAAAABJRU5ErkJggg==" style="height:23px;width:22px" >
-                    Log in with Facebook
-                </button>
-                    <!-- Facebook Login Button -->
-                    <!-- <button class="btn w-100 d-flex align-items-center justify-content-center" >
-                        <img src="https://www.internetmatters.org/wp-content/uploads/2024/08/facebook-logo-new.png" class="me-2"
-                            style="width: 84px; height: 24px;" alt="Facebook Logo">
-                        Log in with Facebook
-                    </button> -->
-                </div>
-                
-
-            </form>
+<div class="container my-5 fade-in">
+    <!-- Loading overlay -->
+    <div *ngIf="loading" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="background-color: rgba(255, 255, 255, 0.9); z-index: 9999;">
+        <div class="text-center">
+            <div class="spinner-border text-primary border-3 mb-3" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h5 class="text-primary fw-bold">Authenticating...</h5>
         </div>
-
     </div>
 
+    <div class="row justify-content-center align-items-center min-vh-75 mt-4">
+        <div class="col-md-8 col-lg-5">
+            <div class="modern-card p-4 p-md-5 border-0 shadow-lg">
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                    <div class="text-center mb-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" style="width: 60px; height: 60px;">
+                            <i class="fa-solid fa-user-lock fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark mb-2">Welcome Back</h2>
+                        <p class="text-muted">Please sign in to your account</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-semibold text-dark">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted px-3"><i class="fa-regular fa-envelope"></i></span>
+                            <input type="email" class="form-control form-control-lg bg-light border-start-0 ps-0" name="email" id="email" formControlName="email" placeholder="name@example.com">
+                        </div>
+                        <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger small mt-2 fw-semibold fade-in">
+                            <i class="fa-solid fa-circle-exclamation me-1"></i>Please enter a valid email
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="password" class="form-label fw-semibold text-dark mb-0">Password</label>
+                            <a class="text-primary text-decoration-none small fw-semibold cursor-pointer" (click)="passwordReset()">Forgot Password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted px-3"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control form-control-lg bg-light border-start-0 ps-0" name="password" id="password" formControlName="password" placeholder="••••••••">
+                        </div>
+                        <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger small mt-2 fw-semibold fade-in">
+                            <i class="fa-solid fa-circle-exclamation me-1"></i>Password is required
+                        </div>
+                    </div>
+
+                    <div class="mb-4 mt-5">
+                        <button class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm py-3" type="submit" [disabled]="userForm.invalid">Sign In</button>
+                    </div>
+
+                    <div class="d-flex align-items-center my-4">
+                        <hr class="flex-grow-1 text-muted opacity-25">
+                        <span class="mx-3 text-muted small fw-semibold">OR CONTINUE WITH</span>
+                        <hr class="flex-grow-1 text-muted opacity-25">
+                    </div>
+
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <button type="button" class="btn btn-outline-dark btn-lg w-100 rounded-pill d-flex align-items-center justify-content-center border-2 gap-3 fw-semibold" (click)="signInWithGoogle()">
+                            <img src="https://cdn-icons-png.flaticon.com/256/720/720255.png" style="width: 24px; height: 24px;" alt="Google Logo">
+                            Log in with Google
+                        </button>
+                        
+                        <button type="button" class="btn btn-outline-primary btn-lg w-100 rounded-pill d-flex align-items-center justify-content-center border-2 gap-3 fw-semibold border-opacity-75" style="color: #1877F2; border-color: #1877F2;">
+                            <i class="fa-brands fa-facebook fs-4"></i>
+                            Log in with Facebook
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4 pt-4 border-top">
+                        <p class="text-muted mb-0">Don't have an account? <a href="javascript:void(0)" routerLink="/create" class="text-primary fw-bold text-decoration-none ms-1">Sign up now</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

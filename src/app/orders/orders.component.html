@@ -1,0 +1,88 @@
+<div class="container my-5 fade-in">
+  <div class="d-flex justify-content-between align-items-center mb-5 border-bottom pb-4">
+    <div>
+      <h2 class="display-6 fw-bold text-dark mb-1">My Orders</h2>
+      <p class="text-muted mb-0">Track and review your past purchases</p>
+    </div>
+    <a routerLink="/products" class="btn btn-primary rounded-pill px-4 d-flex align-items-center gap-2">
+      <i class="fa-solid fa-bag-shopping"></i> Shop More
+    </a>
+  </div>
+
+  <!-- Loading -->
+  <div class="text-center py-5" *ngIf="loading">
+    <div class="spinner-border text-primary mb-3" style="width:3rem;height:3rem;" role="status"></div>
+    <h5 class="text-muted">Loading your orders...</h5>
+  </div>
+
+  <!-- Empty State -->
+  <div class="text-center py-5 my-3" *ngIf="!loading && orders.length === 0">
+    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-4" style="width:100px;height:100px;">
+      <i class="fa-solid fa-box-open fs-1 text-muted"></i>
+    </div>
+    <h4 class="fw-bold mb-2">No orders yet</h4>
+    <p class="text-muted mb-4">Once you place your first order, it will appear here.</p>
+    <a routerLink="/products" class="btn btn-primary rounded-pill px-5">Start Shopping</a>
+  </div>
+
+  <!-- Orders List -->
+  <div class="d-flex flex-column gap-4" *ngIf="!loading && orders.length > 0">
+    <div class="modern-card bg-white overflow-hidden" *ngFor="let order of orders">
+      <!-- Order Header -->
+      <div class="bg-light px-4 py-3 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+          <div>
+            <div class="text-muted small fw-semibold text-uppercase mb-1">Order</div>
+            <div class="fw-bold text-dark">{{ order.orderNumber }}</div>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold text-uppercase mb-1">Placed On</div>
+            <div class="fw-semibold text-dark">{{ order.createdAt?.toDate ? (order.createdAt.toDate() | date:'dd MMM yyyy') : 'Just now' }}</div>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold text-uppercase mb-1">Total</div>
+            <div class="fw-bold text-primary fs-5">{{ order.total | currency }}</div>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold text-uppercase mb-1">Est. Delivery</div>
+            <div class="fw-semibold text-dark">{{ order.estimatedDelivery }}</div>
+          </div>
+        </div>
+        <span class="badge border px-3 py-2 rounded-pill fw-bold small text-capitalize" [ngClass]="getStatusClass(order.status)">
+          <i class="me-1" [ngClass]="getStatusIcon(order.status)"></i> {{ order.status }}
+        </span>
+      </div>
+
+      <!-- Order Items -->
+      <div class="p-4">
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of order.items">
+            <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-light">
+              <div class="bg-white rounded-3 border d-flex align-items-center justify-content-center img-placeholder" style="width:70px;height:70px;flex-shrink:0;">
+                <img [src]="item.imageUrl" class="w-100 h-100 object-fit-contain p-1 rounded-3" [alt]="item.name">
+              </div>
+              <div class="min-w-0">
+                <h6 class="fw-bold mb-1 text-truncate">{{ item.name }}</h6>
+                <div class="text-muted small">Qty: {{ item.quantity }}</div>
+                <div class="text-primary fw-bold">${{ item.price * item.quantity }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="mt-4 pt-3 border-top d-flex flex-wrap gap-4 text-muted small">
+          <div>
+            <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+            <span class="fw-semibold text-dark">Deliver to:</span> {{ order.deliveryAddress }}
+          </div>
+          <div>
+            <i class="fa-solid fa-credit-card me-2 text-primary"></i>
+            <span class="fw-semibold text-dark">Payment:</span>
+            {{ order.paymentMethod === 'cash-on-delivery' ? 'Pay on Delivery' : order.paymentMethod === 'credit-card' ? 'Credit/Debit Card' : 'Digital Wallet' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

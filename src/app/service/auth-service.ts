@@ -4,7 +4,8 @@ import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signO
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { onAuthStateChanged, sendPasswordResetEmail, User } from 'firebase/auth';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ToastService } from './toast.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
     private userSubject: BehaviorSubject<any>;
     user$: Observable<any>;
 
-    constructor(private auth: Auth, private router: Router, private route: ActivatedRoute, private analytics: Analytics) {
+    constructor(private auth: Auth, private router: Router, private route: ActivatedRoute, private analytics: Analytics, private toast: ToastService) {
 
         this.userSubject = new BehaviorSubject(null);
         this.user$ = this.userSubject.asObservable();
@@ -35,11 +36,11 @@ export class AuthService {
     signUp(email: string, password: string) {
         return createUserWithEmailAndPassword(this.auth, email, password)
             .then(res => {
-                alert('Welcome To GadgetHub')
+                this.toast.success('Welcome to GadgetHub! 🎉');
                 this.router.navigate(['']);
             })
             .catch(error => {
-                console.error('Error during sign up:', error);
+                this.toast.error(error.message || 'Sign up failed. Try again.');
             });
     }
 
@@ -52,10 +53,12 @@ export class AuthService {
 
         return signInWithEmailAndPassword(this.auth, email, password)
             .then(res => {
-                alert('Welcome To GadgetHub')
+                this.toast.success(`Welcome back, ${res.user.email?.split('@')[0]}! 👋`);
                 this.router.navigate(['']);
             })
-
+            .catch((error) => {
+                this.toast.error('Invalid email or password. Please try again.');
+            });
     }
 
     passwordReset(email: string) {
@@ -65,10 +68,9 @@ export class AuthService {
     // Logout method
     logout() {
         return signOut(this.auth).then(() => {
-            alert('Log out successfully')
+            this.toast.info('You have been logged out.');
             this.router.navigate(['']);
         });
-
     }
 
     // Get current user
